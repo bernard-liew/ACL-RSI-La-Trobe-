@@ -1,0 +1,218 @@
+---
+title: "2-analysis"
+author: "bernard-liew"
+date: "2021-02-19"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+# Load package
+
+```{r message=FALSE, warning=FALSE}
+# Helper
+library (tidyverse)
+library (arsenal)
+
+# Modelling
+library (huge)
+library (bootnet)
+library (qgraph)
+library (factoextra)
+library (FactoMineR)
+
+```
+
+# Import 
+
+```{r}
+df <- readRDS ("output/dat_acl.RDS")
+```
+
+# Network analysis
+
+## Preprocess
+
+```{r}
+# Select rsi at 6th mth
+mat <- df %>%
+  select (matches ("_6")) %>%
+  select (!matches ("ax_6m|aclrsi|rts_"))
+
+var_names <- names (mat)
+
+names(mat) <- paste0("q", 1:ncol (mat))
+
+
+#Normalize data
+mat.npn <- huge.npn(mat)
+```
+
+## Modelling
+
+```{r message=FALSE, warning=FALSE}
+B <- 1000
+stats_type <- c("edge", "strength", "betweenness", "expectedInfluence", "closeness")
+
+nw <- estimateNetwork(mat.npn,
+                       default="EBICglasso",
+                       corMethod = "cor",
+                        tuning = 0.5,
+                        lambda.min.ratio = 0.001,
+                        corArgs =
+                          list(method = "pearson",
+                               use = "pairwise.complete.obs"))
+
+centr <- centralityTable (nw)
+
+centr_stb <- bootnet (nw,
+                      nBoots = B,
+                      type = "case",
+                      statistics = stats_type,
+                      verbose = FALSE)
+
+cor_stb <- corStability(centr_stb)
+
+edgewts <- bootnet (nw,
+                    nBoots = B,
+                    verbose = FALSE)
+```
+
+## Results
+
+### Plot network
+
+Blue edges - positive correlation
+
+Red edges - negative correlation
+
+The thickness of the edges indicate the magnitude of correlation.
+
+```{r message=FALSE, warning=FALSE}
+# Visualize network
+plot (nw, nodeNames = var_names)
+
+```
+
+### Plot edge weights stability
+
+95%CI of different edge weights that do not overlap are significantly different
+
+```{r message=FALSE, warning=FALSE}
+# Edge weights stability
+plot (edgewts, order = "sample")
+```
+
+
+### Plot centrality
+
+High centrality nodes have strong connections to many other nodes, and act as hubs that connect otherwise disparate nodes to one another.
+
+Low centrality nodes exist on the periphery of the network, with fewer and weaker connections to other nodes of the network.
+
+Strength is the sum of the absolute value of its connections with other nodes in the network.
+
+Degree can be straightforwardly generalized to weighted networks by considering the sum of the weights of the connections (in absolute value), instead of their number. This generalization is called strength.
+
+Closeness centrality is defined as the inverse of the sum of the distances of the focal node from all the other nodes in the network. Closeness is the average shortest path between a given node and the remaining nodes in the network. Nodes with higher closeness are more proximally connected to the rest of the network.
+
+Betweenness is the number of times in which a given node lies on the shortest path between two other nodes.
+
+The greater the value of centrality indices to one, the more important the variable.
+
+```{r message=FALSE, warning=FALSE}
+# Importance
+centralityPlot (nw, include = c("Strength", "Closeness", "Betweenness"), scale = "relative")
+
+```
+
+### Plot centrality stability
+
+```{r message=FALSE, warning=FALSE}
+# Centrality stability
+plot (centr_stb, statistics = c("closeness", "strength", "betweenness"))
+
+```
+
+
+# Clustering
+
+## Preprocess
+```{r}
+mat <- scale(mat)
+```
+
+## Get distance measure
+
+```{r}
+mat_dist <- dist(mat, method = "euclidean")
+fviz_dist(mat_dist)
+
+res.hc <- hclust(d = mat_dist, method = "ward.D2")
+# Compute cophentic distance
+res.coph <- cophenetic(res.hc)
+
+# Correlation between cophenetic distance and
+# the original distance
+cor(mat_dist, res.coph)
+
+```
+
+## Optimal clusters
+
+```{r}
+# Elbow method
+ fviz_nbclust(mat, kmeans, method = "wss") +
+    geom_vline(xintercept = 4, linetype = 2)+
+  labs(subtitle = "Elbow method")
+
+# Silhouette method
+fviz_nbclust(mat, kmeans, method = "silhouette")+
+  labs(subtitle = "Silhouette method")
+
+# Gap statistic
+# nboot = 50 to keep the function speedy. 
+# recommended value: nboot= 500 for your analysis.
+# Use verbose = FALSE to hide computing progression.
+set.seed(123)
+fviz_nbclust(mat, kmeans, nstart = 25,  method = "gap_stat", nboot = 50)+
+  labs(subtitle = "Gap statistic method")
+```
+
+## Cut tree and visualize
+```{r warning=FALSE}
+
+cut_n <- 4
+
+grp <- cutree(res.hc, k = cut_n )
+
+# Cut in 4 groups and color by groups
+fviz_dend(res.hc, k = cut_n, # Cut in four groups
+          cex = 0.5, # label size
+          k_colors = c("#2E9FDF", "#00AFBB", "#E7B800", "#FC4E07"),
+          color_labels_by_k = TRUE, # color labels by groups
+          rect = TRUE)
+
+
+fviz_cluster(list(data = mat, cluster = grp),
+             axes = 1:2,
+          palette = c("#2E9FDF", "#00AFBB", "#E7B800", "#FC4E07"),
+          ellipse.type = "convex", # Concentration ellipse
+          repel = TRUE, # Avoid label overplotting (slow)
+          show.clust.cent = FALSE, ggtheme = theme_minimal())
+```
+
+## Understand clusters
+
+```{r, results = "asis"}
+df_grp <- df %>%
+  select (subj, dob, sex, graft, matches ("pre_|aclrsi|rts"))
+df_grp$clus <- factor (grp)
+
+
+
+tableby(clus ~ sex + pre_sports_level + pre_sports_freq + rts_exp + aclrsi_6 + aclrsi_12 + rts_12 + rts_6,
+        data = na.omit (df_grp)) %>%
+  summary ()
+```
+

@@ -1,0 +1,63 @@
+---
+title: "1-explore"
+author: "bernard-liew"
+date: "2021-02-19"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+# Load package
+
+```{r}
+# Helper
+library (tidyverse)
+library (skimr)
+library (arsenal)
+library (janitor)
+library (rio)
+library (lubridate)
+```
+
+# Import
+
+```{r}
+key <- import ("data/key.xlsx")
+
+df <- import ("data/Data acl-rsi network analysis (relevant variables only) deidentified.xlsx",
+              col_types = key$type,
+              skip = 1)
+
+names (df) <- key$new_header
+
+df[, c(7)] <- ymd_hms(df[, c(7)])
+df[, c(8)] <- ymd_hms(df[, c(8)])
+```
+
+# Explore
+
+```{r}
+skim (df)
+
+unique (df$sex)
+unique (df$pre_sports_level)
+unique (df$pre_sports_type)
+unique(df$rts_12)
+unique(df$rts_6)
+```
+
+# Missing
+
+```{r}
+miss_df <- df %>%
+  filter (!complete.cases(.))
+
+```
+
+# Export
+
+```{r}
+export (df,
+        "output/dat_acl.RDS")
+```
+
