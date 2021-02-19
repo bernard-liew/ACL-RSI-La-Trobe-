@@ -11,4 +11,4 @@ editor_options:
 Welcome to my research website.
 
 
-[This code performs a preliminary analysis on 6th month RSI](2-analysis.html)
+Click on this [docs/2-analysis.html](2-analysis.html) to see my results.
