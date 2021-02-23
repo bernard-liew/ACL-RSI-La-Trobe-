@@ -19,195 +19,175 @@ library (cowplot)
 library (huge)
 library (bootnet)
 library (qgraph)
-library (factoextra)
-library (FactoMineR)
 library (NetworkComparisonTest)
+
+# Parallel
+library (furrr)
+
+# Styling
+library (kableExtra)
 
 ```
 
 # Import 
 
+Binarize `rts_6` and `rts_12`.
+
+`rts_6` = `"no"` if either missing `NA`, `"na_no_prior"` or `"no"`. Everything else is `"yes"`.
+
+`rts_12` = `"no"` if either missing `"no"`, or `"yes_lower"`. Everything else is `"yes"`.
 ```{r}
-df <- readRDS ("output/dat_acl.RDS")
-df <- df %>%
-  mutate (rts_6binary = ifelse (rts_6 %in% c(NA, "na_no_prior", "no"), "no", "yes"),
+df <- readRDS ("output/dat_acl.RDS") %>%
+  mutate (rts_6binary = ifelse (rts_6 %in% c("na_no_prior", "no"), "no", 
+                                ifelse (rts_6 %in% c("NA"), "na", "yes")),
           rts_12binary = ifelse (rts_12 %in% c("no", "yes_lower"), "no", "yes"))
 ```
 
+```{r, include = FALSE}
+res <- readRDS ("output/nw_res.RDS")
+```
+
+
 # Network analysis
 
-## Preprocess
+## Create datasets
 
-```{r message=FALSE, warning=FALSE}
-
-net_analysis <- function (data, follow_up = "_6", n_boot = 10, subgroup_var = rts_6binary, subgroup = "no") {
-  
-  # Select rsi at 6th mth
-  mat <- data %>%
-    filter ({{subgroup_var}}  %in% subgroup) %>%
-    select (matches (follow_up)) %>%
+```{r message=FALSE, warning=FALSE, eval = FALSE}
+# 6th month RSI data
+dat1 <- df%>%
+    select (matches ("_6")) %>%
     select (!matches ("ax_6m|ax_12m|aclrsi|rts_"))
-  
-  var_names <- names (mat)
-  
-  names(mat) <- paste0("q", 1:ncol (mat))
-  
-  
-  #Normalize data
-  mat.npn <- huge.npn(mat)
+# 12th month RSI data
+dat2 <- df%>%
+    select (matches ("_12")) %>%
+    select (!matches ("ax_6m|ax_12m|aclrsi|rts_"))
+# 6th month RSI data on subgroup RTS at 6mo = no
+dat3 <- df%>%
+    filter (rts_6binary != "na") %>%
+    filter (rts_6binary == "no") %>%
+    select (matches ("_6")) %>%
+    select (!matches ("ax_6m|ax_12m|aclrsi|rts_"))
+# 6th month RSI data on subgroup RTS at 6mo = yes
+dat4 <- df %>%
+    filter (rts_6binary != "na") %>%
+    filter (rts_6binary == "yes") %>%
+    select (matches ("_6")) %>%
+    select (!matches ("ax_6m|ax_12m|aclrsi|rts_"))
+# 12th month RSI data on subgroup RTS at 12mo = no
+dat5 <- df%>%
+    filter (rts_12binary == "no") %>%
+    select (matches ("_12")) %>%
+    select (!matches ("ax_6m|ax_12m|aclrsi|rts_"))
+# 12th month RSI data on subgroup RTS at 12mo = yes
+dat6 <- df%>%
+    filter (rts_12binary == "yes") %>%
+    select (matches ("_12")) %>%
+    select (!matches ("ax_6m|ax_12m|aclrsi|rts_"))
 
-  stats_type <- c("edge", "strength", "betweenness", "expectedInfluence", "closeness")
-  
-  nw <- estimateNetwork(mat.npn,
+var_names <- str_remove (names (dat1), "_6")
+names(dat1) <- names(dat2) <- names(dat3) <- names(dat4) <- names(dat5) <- names(dat6) <- paste0("q", 1:ncol (dat1))
+
+res <- tibble (subgrp = c(1:6),
+               id = c("6mo", "12mo", "6moNo", "6moYes", "12moNo", "12moYes"),
+               data =  list (dat1, dat2, dat3, dat4, dat5, dat6))
+
+```
+
+## Perform analysis
+
+```{r, eval = FALSE}
+B <- 1000
+plan (multisession)
+stats_type <- c("strength", "betweenness", "closeness")
+
+res <- res %>%
+  mutate (dat_norm = map (data, huge.npn)) %>%
+  mutate (nw = map (dat_norm, estimateNetwork,
                          default="EBICglasso",
                          corMethod = "cor",
                           tuning = 0.5,
                           lambda.min.ratio = 0.001,
                           corArgs =
                             list(method = "pearson",
-                                 use = "pairwise.complete.obs"))
-  
-  centr <- centralityTable (nw)
-  
-  centr_stb <- bootnet (nw,
-                        nBoots = n_boot ,
-                        type = "case",
-                        statistics = stats_type,
-                        verbose = FALSE)
-  
-  cor_stb <- corStability(centr_stb)
-  
-  edgewts <- bootnet (nw,
-                      nBoots = n_boot ,
-                      verbose = FALSE)
-  
-  return (list (mat = mat,
-                nw = nw,
-                centr = centr,
-                centr_stb = centr_stb,
-                cor_stb = cor_stb,
-                edgewts = edgewts,
-                var_names = var_names))
-  
-}
-
-res <- list ()
-
-res$mth6_rts12no <- net_analysis (data = df, 
-                          follow_up = "_6", 
-                          subgroup_var = rts_12binary, 
-                          subgroup = "no", 
-                          n_boot = 1000)
-
-res$mth6_rts12yes <- net_analysis (data = df, 
-                          follow_up = "_6", 
-                          subgroup_var = rts_12binary, 
-                          subgroup = "yes", 
-                          n_boot = 1000)
-
-res$mth12_rts12no <- net_analysis (data = df, 
-                          follow_up = "_12", 
-                          subgroup_var = rts_12binary, 
-                          subgroup = "no", 
-                          n_boot = 1000)
-
-res$mth12_rts12yes <- net_analysis (data = df, 
-                          follow_up = "_12", 
-                          subgroup_var = rts_12binary, 
-                          subgroup = "yes", 
-                          n_boot = 1000)
-
-res$mth6 <- net_analysis (data = df, 
-                          follow_up = "_6", 
-                          subgroup_var = rts_12binary, 
-                          subgroup = c("no", "yes"), 
-                          n_boot = 1000)
-
-res$mth12 <- net_analysis (data = df, 
-                          follow_up = "_12", 
-                          subgroup_var = rts_12binary, 
-                          subgroup = c("no", "yes"), 
-                          n_boot = 1000)
-
+                                 use = "pairwise.complete.obs"))) %>%
+  # Get centrality measures
+  mutate (centr = map (nw, centralityTable)) %>%
+  mutate (centr_stb = future_map (nw, 
+                                  bootnet, 
+                                  nBoots = B,
+                                  type = "case",
+                                  statistics = stats_type,
+                                  .options = furrr_options(seed = TRUE))) %>%
+  mutate (cor_stb = map (centr_stb,
+                         corStability)) %>%
+  mutate (edgewts = future_map (nw, 
+                                bootnet, 
+                                nBoots = B,
+                                .options = furrr_options(seed = TRUE)))
+   
+saveRDS(res,
+        "output/nw_res.RDS")  
 ```
+
+
 
 ## Results
 
 ### Plot network
 
-Blue edges - positive correlation
-
-Red edges - negative correlation
+**Blue edges** - positive correlation. **Red edges **- negative correlation.
 
 The thickness of the edges indicate the magnitude of correlation.
 
-```{r message=FALSE, warning=FALSE}
+```{r, include = FALSE}
+var_table <- data.frame(nodes = paste0("q", 1:12))
 
-nodenames <- str_remove (res$mth6_rts12no$var_names, "_6")
+qn <- c("Are you confident that you can perform at your previous level of sport participation?",
+        "Do you think you are likely to re-injury your knee by participating in your sport?",
+        "Are you nervous about playing your sport?",
+        "Are you confident that your knee will not give way by playing your sport?",
+        "Are you confident that you could play your sport without concern for your knee?",
+        "Do you find it frustrating to have to consider your knee with respect to your sport?",
+        "Are you fearful of re-injuring your knee by playing your sport?",
+        "Are you confident about your knee holding up under pressure?",
+        "Are you afraid of accidentally injuring your knee by playing your sport?",
+        "Do thoughts of having to go through surgery and rehabilitation prevent you from playing your sport?",
+        "Are you confident about your ability to perform well at your sport?",
+        "Do you feel relaxed about playing your sport?")
 
-par(mfrow= c(2,3))
+var_table$qn <- qn
+
+var_table %>%
+  kable () %>%
+  kable_styling()
+```
+
+
+```{r message=FALSE, warning=FALSE, fig.height=9, fig.width=9}
+
+par(mfrow= c(3,2))
 # Visualize network
-p1 <- plot (res$mth6_rts12no$nw, 
-            title = "6mo_noRTS12", 
-            label.cex = 1.5, 
-            vsize = 10, 
-            curve = 0.4, 
-            curveAll = TRUE,
-            nodeNames = nodenames)
-plot (res$mth6_rts12yes$nw, title = "6mo_yesRTS12", 
-      layout = p1$layout, 
-      label.cex = 1.5, 
-      vsize = 10, 
-      curve = 0.4,
-      curveAll = TRUE,
-      nodeNames = nodenames)
-plot (res$mth12_rts12no$nw, title = "12mo_noRTS12", 
-      layout = p1$layout, 
-      label.cex = 1.5, 
-      vsize = 10, 
-      curve = 0.4,
-      curveAll = TRUE,
-      nodeNames = nodenames)
-plot (res$mth12_rts12yes$nw, title = "12mo_yesRTS12", 
-      layout = p1$layout, 
-      label.cex = 1.5, 
-      vsize = 10, 
-      curve = 0.4,
-      curveAll = TRUE,
-      nodeNames = nodenames)
-
-plot (res$mth6$nw, title = "6mo", 
-      layout = p1$layout, 
-      label.cex = 1.5, 
-      vsize = 10, 
-      curve = 0.4,
-      curveAll = TRUE,
-      nodeNames = nodenames)
-plot (res$mth12$nw, title = "12mo", 
-      layout = p1$layout, 
-      label.cex = 1.5, 
-      vsize = 10, 
-      curve = 0.4,
-      curveAll = TRUE,
-      nodeNames = nodenames)
+p1 <- plot (res$nw[[1]], title = res$id[[1]], label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
+plot (res$nw[[2]], title = res$id[[2]], layout = p1$layout, label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
+plot (res$nw[[3]], title = res$id[[3]], layout = p1$layout, label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
+plot (res$nw[[4]], title = res$id[[4]], layout = p1$layout, label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
+plot (res$nw[[5]], title = res$id[[5]], layout = p1$layout, label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
+plot (res$nw[[6]], title = res$id[[6]], layout = p1$layout, label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
 ```
 
 ### Plot edge weights stability
 
-95%CI of different edge weights that do not overlap are significantly different
+95% CI of different edge weights that do not overlap are significantly different
 
-```{r message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE, fig.height=25, fig.width=9}
 
-w_fig <- list() 
-
-w_fig$mth6 <- plot (res$mth6$edgewts, order = "sample", CIstyle = "SE")
-w_fig$mth12 <- plot (res$mth12$edgewts, order = "sample", CIstyle = "SE")
+w_fig <- map (res$edgewts, plot, order = "sample", CIstyle = "SE")
 
 w_fig <- map (w_fig, ~.x + 
                   theme(text = element_text(size = 16)), 
               include = "all", print = FALSE, scale = "relative")
 
-cowplot::plot_grid(plotlist = w_fig, labels = c("6mth","12mth"), vjust = 1, hjust = -1, ncol = 2, nrow = 1)
+cowplot::plot_grid(plotlist = w_fig, labels = res$id, vjust = 1, hjust = -1, ncol = 2, nrow = 3)
 
 
 ```
@@ -215,28 +195,20 @@ cowplot::plot_grid(plotlist = w_fig, labels = c("6mth","12mth"), vjust = 1, hjus
 
 ### Plot centrality
 
-High centrality nodes have strong connections to many other nodes, and act as hubs that connect otherwise disparate nodes to one another.
+**High centrality** nodes have strong connections to many other nodes, and act as hubs that connect otherwise disparate nodes to one another. **Low centrality** nodes exist on the periphery of the network, with fewer and weaker connections to other nodes of the network.
 
-Low centrality nodes exist on the periphery of the network, with fewer and weaker connections to other nodes of the network.
+**Strength** is the sum of the absolute value of its connections with other nodes in the network.
 
-Strength is the sum of the absolute value of its connections with other nodes in the network.
+**Closeness** centrality is defined as the inverse of the sum of the distances of the focal node from all the other nodes in the network. Closeness is the average shortest path between a given node and the remaining nodes in the network. Nodes with higher closeness are more proximally connected to the rest of the network.
 
-Degree can be straightforwardly generalized to weighted networks by considering the sum of the weights of the connections (in absolute value), instead of their number. This generalization is called strength.
-
-Closeness centrality is defined as the inverse of the sum of the distances of the focal node from all the other nodes in the network. Closeness is the average shortest path between a given node and the remaining nodes in the network. Nodes with higher closeness are more proximally connected to the rest of the network.
-
-Betweenness is the number of times in which a given node lies on the shortest path between two other nodes.
+**Betweenness** is the number of times in which a given node lies on the shortest path between two other nodes.
 
 The greater the value of centrality indices to one, the more important the variable.
 
-```{r message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE, fig.height=15, fig.width=9}
 
-c_fig <- list () 
-
-c_fig$mth6 <- centralityPlot (res$mth6$nw, include = c("Strength", "Closeness", "Betweenness"), scale = "relative")
-c_fig$mth12 <- centralityPlot (res$mth12$nw, include = c("Strength", "Closeness", "Betweenness"), scale = "relative")
-
-c_fig <- c_fig %>%
+c_fig <- map (res$nw, centralityPlot, include = c("Closeness", "Strength", "Betweenness"),  
+              print = FALSE, scale = "relative") %>%
   map (~.x + 
                   scale_x_continuous(breaks= c(0, 0.5, 1), lim = c(0, 1)) + 
                   theme(text = element_text(size = 20), 
@@ -244,22 +216,35 @@ c_fig <- c_fig %>%
               include = "all", print = FALSE, scale = "relative")
 
 #tiff(width = 15, height = 15, units = "in", res = 100, file = "output/odi_strength.tiff")
-cowplot::plot_grid(plotlist = c_fig, labels = c("6mth","12mth"), vjust = 1, hjust = -1, ncol = 2, nrow = 1)
+cowplot::plot_grid(plotlist = c_fig,  labels = res$id, vjust = 1, hjust = 0, ncol = 2, nrow = 3)
+#dev.off()
 ```
 
 ### Plot centrality stability
 
-```{r message=FALSE, warning=FALSE}
-# Centrality stability
-plot (res$mth6$centr_stb, statistics = c("closeness", "strength", "betweenness"))
-plot (res$mth12$centr_stb, statistics = c("closeness", "strength", "betweenness"))
+```{r message=FALSE, warning=FALSE, fig.height=15, fig.width=9}
+# Plot centrality stability
+s_fig <- map (res$centr_stb, plot, statistics = c("closeness", "strength", "betweenness"))
+
+s_fig <- map (s_fig, ~.x + 
+                ylab ("Ave Corr") + 
+                  theme(text = element_text(size = 20), 
+                        axis.text.x = element_text(angle = 90, hjust = 1)), 
+              include = "all", print = FALSE, scale = "relative")
+
+
+#tiff(width = 15, height = 15, units = "in", res = 100, file = "output/odi_stability.tiff")
+cowplot::plot_grid(plotlist = s_fig, labels = res$id, vjust = 1, hjust = 0, ncol = 2, nrow = 3)
+#dev.off()
 ```
 
 ## Compare networks
 
-```{r}
-pair_res <- NCT (res$mth6$nw, 
-             res$mth12$nw,
+### Compare the networks for the RSI at 6th and 12th months
+
+```{r, message=FALSE, warning=FALSE}
+pair_res <- NCT (res$nw[[1]], 
+             res$nw[[2]],
              it = 1000,
              paired = TRUE,
              test.edges = TRUE,
@@ -269,85 +254,82 @@ pair_res <- NCT (res$mth6$nw,
              centrality = c("closeness", "strength", "betweenness"))
 ```
 
+The networks between the 6th and 12th month are not significantly different (p = `r pair_res$nwinv.pval`). 
 
-# Clustering
-
-## Preprocess
-```{r}
-mat <- scale(mat)
-```
-
-## Get distance measure
+#### Edges which are different between networks
 
 ```{r}
-mat_dist <- dist(mat, method = "euclidean")
-fviz_dist(mat_dist)
-
-res.hc <- hclust(d = mat_dist, method = "ward.D2")
-# Compute cophentic distance
-res.coph <- cophenetic(res.hc)
-
-# Correlation between cophenetic distance and
-# the original distance
-cor(mat_dist, res.coph)
-
+pair_res$einv.pvals %>%
+  filter (`p-value` < 0.05)
 ```
 
-## Optimal clusters
+#### Centralities which are different between networks
 
 ```{r}
-# Elbow method
- fviz_nbclust(mat, kmeans, method = "wss") +
-    geom_vline(xintercept = 4, linetype = 2)+
-  labs(subtitle = "Elbow method")
-
-# Silhouette method
-fviz_nbclust(mat, kmeans, method = "silhouette")+
-  labs(subtitle = "Silhouette method")
-
-# Gap statistic
-# nboot = 50 to keep the function speedy. 
-# recommended value: nboot= 500 for your analysis.
-# Use verbose = FALSE to hide computing progression.
-set.seed(123)
-fviz_nbclust(mat, kmeans, nstart = 25,  method = "gap_stat", nboot = 50)+
-  labs(subtitle = "Gap statistic method")
+pair_res$diffcen.pval %>%
+  as.data.frame() %>%
+  filter_all (any_vars(. < 0.05))
 ```
 
-## Cut tree and visualize
-```{r warning=FALSE}
+### Compare the networks for the RSI at 6th month for those whose RTS value at 6mo was no vs yes
 
-cut_n <- 4
-
-grp <- cutree(res.hc, k = cut_n )
-
-# Cut in 4 groups and color by groups
-fviz_dend(res.hc, k = cut_n, # Cut in four groups
-          cex = 0.5, # label size
-          k_colors = c("#2E9FDF", "#00AFBB", "#E7B800", "#FC4E07"),
-          color_labels_by_k = TRUE, # color labels by groups
-          rect = TRUE)
-
-
-fviz_cluster(list(data = mat, cluster = grp),
-             axes = 1:2,
-          palette = c("#2E9FDF", "#00AFBB", "#E7B800", "#FC4E07"),
-          ellipse.type = "convex", # Concentration ellipse
-          repel = TRUE, # Avoid label overplotting (slow)
-          show.clust.cent = FALSE, ggtheme = theme_minimal())
+```{r, message=FALSE, warning=FALSE}
+pair_res <- NCT (res$nw[[3]], 
+             res$nw[[4]],
+             it = 1000,
+             paired = FALSE,
+             test.edges = TRUE,
+             progressbar = FALSE,
+             test.centrality = TRUE,
+             p.adjust.methods = "none",
+             centrality = c("closeness", "strength", "betweenness"))
 ```
 
-## Understand clusters
+The networks are not significantly different (p = `r pair_res$nwinv.pval`). 
 
-```{r, results = "asis"}
-df_grp <- df %>%
-  select (subj, dob, sex, graft, matches ("pre_|aclrsi|rts"))
-df_grp$clus <- factor (grp)
+#### Edges which are different between networks
 
-
-
-tableby(clus ~ sex + pre_sports_level + pre_sports_freq + rts_exp + aclrsi_6 + aclrsi_12 + rts_12 + rts_6,
-        data = na.omit (df_grp)) %>%
-  summary ()
+```{r}
+pair_res$einv.pvals %>%
+  filter (`p-value` < 0.05)
 ```
 
+#### Centralities which are different between networks
+
+```{r}
+pair_res$diffcen.pval %>%
+  as.data.frame() %>%
+  filter_all (any_vars(. < 0.05))
+```
+
+### Compare the networks for the RSI at 12th month for those whose RTS value at 12mo was no vs yes
+
+```{r, message=FALSE, warning=FALSE}
+pair_res <- NCT (res$nw[[5]], 
+             res$nw[[6]],
+             it = 1000,
+             paired = FALSE,
+             test.edges = TRUE,
+             progressbar = FALSE,
+             test.centrality = TRUE,
+             p.adjust.methods = "none",
+             centrality = c("closeness", "strength", "betweenness"))
+
+```
+
+The networks are not significantly different (p = `r pair_res$nwinv.pval`). 
+
+#### Edges which are different between networks
+
+```{r}
+pair_res$einv.pvals %>%
+  filter (`p-value` < 0.05)
+```
+
+#### Centralities which are different between networks
+
+```{r}
+pair_res$diffcen.pval %>%
+  as.data.frame() %>%
+  filter_all (any_vars(. < 0.05))
+```

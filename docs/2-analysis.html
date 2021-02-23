@@ -27,6 +27,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -397,7 +399,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -406,7 +408,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -415,10 +417,10 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-02-19
+<strong>Last updated:</strong> 2021-02-23
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>acl_rsi/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -434,12 +436,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -506,23 +508,30 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcombernardliewACLRSILaTrobetree53bd51fbfbf61eafd1a7ba0791c8157bdbc0ea18targetblank53bd51fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/bernard-liew/ACL-RSI-La-Trobe-/tree/53bd51fbfbf61eafd1a7ba0791c8157bdbc0ea18" target="_blank">53bd51f</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcombernardliewACLRSILaTrobetree1b00161c4a99919fb20d30a8cdf81f1f628d6a38targetblank1b00161a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/bernard-liew/ACL-RSI-La-Trobe-/tree/1b00161c4a99919fb20d30a8cdf81f1f628d6a38" target="_blank">1b00161</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcombernardliewACLRSILaTrobetree53bd51fbfbf61eafd1a7ba0791c8157bdbc0ea18targetblank53bd51fa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcombernardliewACLRSILaTrobetree1b00161c4a99919fb20d30a8cdf81f1f628d6a38targetblank1b00161a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/bernard-liew/ACL-RSI-La-Trobe-/tree/53bd51fbfbf61eafd1a7ba0791c8157bdbc0ea18" target="_blank">53bd51f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/bernard-liew/ACL-RSI-La-Trobe-/tree/1b00161c4a99919fb20d30a8cdf81f1f628d6a38" target="_blank">1b00161</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Ignored files:
+    Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  output/nw_res.RDS
+
+Unstaged changes:
+    Modified:   analysis/2-analysis.Rmd
 
 </code></pre>
 <p>
@@ -561,6 +570,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/bernard-liew/ACL-RSI-La-Trobe-/blob/1b00161c4a99919fb20d30a8cdf81f1f628d6a38/analysis/2-analysis.Rmd" target="_blank">1b00161</a>
+</td>
+<td>
+Liew
+</td>
+<td>
+2021-02-22
+</td>
+<td>
+added subgroup analysis and NCT
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/bernard-liew/ACL-RSI-La-Trobe-/aeab96b225ddd986901f42449885cf8c1387f992/docs/2-analysis.html" target="_blank">aeab96b</a>
+</td>
+<td>
+bernard-liew
+</td>
+<td>
+2021-02-19
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -607,558 +650,264 @@ first exploration
 <pre class="r"><code># Helper
 library (tidyverse)
 library (arsenal)
+library (cowplot)
 
 # Modelling
 library (huge)
 library (bootnet)
 library (qgraph)
-library (factoextra)
-library (FactoMineR)</code></pre>
+library (NetworkComparisonTest)
+
+# Parallel
+library (furrr)
+
+# Styling
+library (kableExtra)</code></pre>
 </div>
 <div id="import" class="section level1">
 <h1>Import</h1>
-<pre class="r"><code>df &lt;- readRDS (&quot;output/dat_acl.RDS&quot;)</code></pre>
+<p>Binarize <code>rts_6</code> and <code>rts_12</code>.</p>
+<p><code>rts_6</code> = <code>"no"</code> if either missing <code>NA</code>, <code>"na_no_prior"</code> or <code>"no"</code>. Everything else is <code>"yes"</code>.</p>
+<p><code>rts_12</code> = <code>"no"</code> if either missing <code>"no"</code>, or <code>"yes_lower"</code>. Everything else is <code>"yes"</code>.</p>
+<pre class="r"><code>df &lt;- readRDS (&quot;output/dat_acl.RDS&quot;) %&gt;%
+  mutate (rts_6binary = ifelse (rts_6 %in% c(&quot;na_no_prior&quot;, &quot;no&quot;), &quot;no&quot;, 
+                                ifelse (rts_6 %in% c(&quot;NA&quot;), &quot;na&quot;, &quot;yes&quot;)),
+          rts_12binary = ifelse (rts_12 %in% c(&quot;no&quot;, &quot;yes_lower&quot;), &quot;no&quot;, &quot;yes&quot;))</code></pre>
 </div>
 <div id="network-analysis" class="section level1">
 <h1>Network analysis</h1>
-<div id="preprocess" class="section level2">
-<h2>Preprocess</h2>
-<pre class="r"><code># Select rsi at 6th mth
-mat &lt;- df %&gt;%
-  select (matches (&quot;_6&quot;)) %&gt;%
-  select (!matches (&quot;ax_6m|aclrsi|rts_&quot;))
+<div id="create-datasets" class="section level2">
+<h2>Create datasets</h2>
+<pre class="r"><code># 6th month RSI data
+dat1 &lt;- df%&gt;%
+    select (matches (&quot;_6&quot;)) %&gt;%
+    select (!matches (&quot;ax_6m|ax_12m|aclrsi|rts_&quot;))
+# 12th month RSI data
+dat2 &lt;- df%&gt;%
+    select (matches (&quot;_12&quot;)) %&gt;%
+    select (!matches (&quot;ax_6m|ax_12m|aclrsi|rts_&quot;))
+# 6th month RSI data on subgroup RTS at 6mo = no
+dat3 &lt;- df%&gt;%
+    filter (rts_6binary != &quot;na&quot;) %&gt;%
+    filter (rts_6binary == &quot;no&quot;) %&gt;%
+    select (matches (&quot;_6&quot;)) %&gt;%
+    select (!matches (&quot;ax_6m|ax_12m|aclrsi|rts_&quot;))
+# 6th month RSI data on subgroup RTS at 6mo = yes
+dat4 &lt;- df %&gt;%
+    filter (rts_6binary != &quot;na&quot;) %&gt;%
+    filter (rts_6binary == &quot;yes&quot;) %&gt;%
+    select (matches (&quot;_6&quot;)) %&gt;%
+    select (!matches (&quot;ax_6m|ax_12m|aclrsi|rts_&quot;))
+# 12th month RSI data on subgroup RTS at 12mo = no
+dat5 &lt;- df%&gt;%
+    filter (rts_12binary == &quot;no&quot;) %&gt;%
+    select (matches (&quot;_12&quot;)) %&gt;%
+    select (!matches (&quot;ax_6m|ax_12m|aclrsi|rts_&quot;))
+# 12th month RSI data on subgroup RTS at 12mo = yes
+dat6 &lt;- df%&gt;%
+    filter (rts_12binary == &quot;yes&quot;) %&gt;%
+    select (matches (&quot;_12&quot;)) %&gt;%
+    select (!matches (&quot;ax_6m|ax_12m|aclrsi|rts_&quot;))
 
-var_names &lt;- names (mat)
+var_names &lt;- str_remove (names (dat1), &quot;_6&quot;)
+names(dat1) &lt;- names(dat2) &lt;- names(dat3) &lt;- names(dat4) &lt;- names(dat5) &lt;- names(dat6) &lt;- paste0(&quot;q&quot;, 1:ncol (dat1))
 
-names(mat) &lt;- paste0(&quot;q&quot;, 1:ncol (mat))
-
-
-#Normalize data
-mat.npn &lt;- huge.npn(mat)</code></pre>
-<pre><code>Conducting the nonparanormal (npn) transformation via shrunkun ECDF....done.</code></pre>
+res &lt;- tibble (subgrp = c(1:6),
+               id = c(&quot;6mo&quot;, &quot;12mo&quot;, &quot;6moNo&quot;, &quot;6moYes&quot;, &quot;12moNo&quot;, &quot;12moYes&quot;),
+               data =  list (dat1, dat2, dat3, dat4, dat5, dat6))</code></pre>
 </div>
-<div id="modelling" class="section level2">
-<h2>Modelling</h2>
+<div id="perform-analysis" class="section level2">
+<h2>Perform analysis</h2>
 <pre class="r"><code>B &lt;- 1000
-stats_type &lt;- c(&quot;edge&quot;, &quot;strength&quot;, &quot;betweenness&quot;, &quot;expectedInfluence&quot;, &quot;closeness&quot;)
+plan (multisession)
+stats_type &lt;- c(&quot;strength&quot;, &quot;betweenness&quot;, &quot;closeness&quot;)
 
-nw &lt;- estimateNetwork(mat.npn,
-                       default=&quot;EBICglasso&quot;,
-                       corMethod = &quot;cor&quot;,
-                        tuning = 0.5,
-                        lambda.min.ratio = 0.001,
-                        corArgs =
-                          list(method = &quot;pearson&quot;,
-                               use = &quot;pairwise.complete.obs&quot;))
-
-centr &lt;- centralityTable (nw)
-
-centr_stb &lt;- bootnet (nw,
-                      nBoots = B,
-                      type = &quot;case&quot;,
-                      statistics = stats_type,
-                      verbose = FALSE)
-
-cor_stb &lt;- corStability(centr_stb)</code></pre>
-<pre><code>=== Correlation Stability Analysis === 
-
-Sampling levels tested:
-   nPerson Drop%   n
-1      110  75.1 106
-2      145  67.1 108
-3      179  59.4 108
-4      213  51.7 109
-5      247  44.0 104
-6      282  36.1  87
-7      316  28.3 103
-8      350  20.6  89
-9      385  12.7 100
-10     419   5.0  86
-
-Maximum drop proportions to retain correlation of 0.7 in at least 95% of the samples:
-
-betweenness: 0.517 
-  - For more accuracy, run bootnet(..., caseMin = 0.44, caseMax = 0.594) 
-
-closeness: 0.517 
-  - For more accuracy, run bootnet(..., caseMin = 0.44, caseMax = 0.594) 
-
-edge: 0.751 (CS-coefficient is highest level tested)
-  - For more accuracy, run bootnet(..., caseMin = 0.671, caseMax = 1) 
-
-expectedInfluence: 0.751 (CS-coefficient is highest level tested)
-  - For more accuracy, run bootnet(..., caseMin = 0.671, caseMax = 1) 
-
-strength: 0.751 (CS-coefficient is highest level tested)
-  - For more accuracy, run bootnet(..., caseMin = 0.671, caseMax = 1) 
-
-Accuracy can also be increased by increasing both &#39;nBoots&#39; and &#39;caseN&#39;.</code></pre>
-<pre class="r"><code>edgewts &lt;- bootnet (nw,
-                    nBoots = B,
-                    verbose = FALSE)</code></pre>
+res &lt;- res %&gt;%
+  mutate (dat_norm = map (data, huge.npn)) %&gt;%
+  mutate (nw = map (dat_norm, estimateNetwork,
+                         default=&quot;EBICglasso&quot;,
+                         corMethod = &quot;cor&quot;,
+                          tuning = 0.5,
+                          lambda.min.ratio = 0.001,
+                          corArgs =
+                            list(method = &quot;pearson&quot;,
+                                 use = &quot;pairwise.complete.obs&quot;))) %&gt;%
+  # Get centrality measures
+  mutate (centr = map (nw, centralityTable)) %&gt;%
+  mutate (centr_stb = future_map (nw, 
+                                  bootnet, 
+                                  nBoots = B,
+                                  type = &quot;case&quot;,
+                                  statistics = stats_type,
+                                  .options = furrr_options(seed = TRUE))) %&gt;%
+  mutate (cor_stb = map (centr_stb,
+                         corStability)) %&gt;%
+  mutate (edgewts = future_map (nw, 
+                                bootnet, 
+                                nBoots = B,
+                                .options = furrr_options(seed = TRUE)))
+   
+saveRDS(res,
+        &quot;output/nw_res.RDS&quot;)  </code></pre>
 </div>
 <div id="results" class="section level2">
 <h2>Results</h2>
 <div id="plot-network" class="section level3">
 <h3>Plot network</h3>
-<p>Blue edges - positive correlation</p>
-<p>Red edges - negative correlation</p>
+<p><strong>Blue edges</strong> - positive correlation. <strong>Red edges </strong>- negative correlation.</p>
 <p>The thickness of the edges indicate the magnitude of correlation.</p>
-<pre class="r"><code># Visualize network
-plot (nw, nodeNames = var_names)</code></pre>
-<p><img src="figure/2-analysis.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>par(mfrow= c(3,2))
+# Visualize network
+p1 &lt;- plot (res$nw[[1]], title = res$id[[1]], label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
+plot (res$nw[[2]], title = res$id[[2]], layout = p1$layout, label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
+plot (res$nw[[3]], title = res$id[[3]], layout = p1$layout, label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
+plot (res$nw[[4]], title = res$id[[4]], layout = p1$layout, label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
+plot (res$nw[[5]], title = res$id[[5]], layout = p1$layout, label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
+plot (res$nw[[6]], title = res$id[[6]], layout = p1$layout, label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)</code></pre>
+<p><img src="figure/2-analysis.Rmd/unnamed-chunk-7-1.png" width="864" style="display: block; margin: auto;" /></p>
 </div>
 <div id="plot-edge-weights-stability" class="section level3">
 <h3>Plot edge weights stability</h3>
-<p>95%CI of different edge weights that do not overlap are significantly different</p>
-<pre class="r"><code># Edge weights stability
-plot (edgewts, order = &quot;sample&quot;)</code></pre>
-<p><img src="figure/2-analysis.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>95% CI of different edge weights that do not overlap are significantly different</p>
+<pre class="r"><code>w_fig &lt;- map (res$edgewts, plot, order = &quot;sample&quot;, CIstyle = &quot;SE&quot;)
+
+w_fig &lt;- map (w_fig, ~.x + 
+                  theme(text = element_text(size = 16)), 
+              include = &quot;all&quot;, print = FALSE, scale = &quot;relative&quot;)
+
+cowplot::plot_grid(plotlist = w_fig, labels = res$id, vjust = 1, hjust = -1, ncol = 2, nrow = 3)</code></pre>
+<p><img src="figure/2-analysis.Rmd/unnamed-chunk-8-1.png" width="864" style="display: block; margin: auto;" /></p>
 </div>
 <div id="plot-centrality" class="section level3">
 <h3>Plot centrality</h3>
-<p>High centrality nodes have strong connections to many other nodes, and act as hubs that connect otherwise disparate nodes to one another.</p>
-<p>Low centrality nodes exist on the periphery of the network, with fewer and weaker connections to other nodes of the network.</p>
-<p>Strength is the sum of the absolute value of its connections with other nodes in the network.</p>
-<p>Degree can be straightforwardly generalized to weighted networks by considering the sum of the weights of the connections (in absolute value), instead of their number. This generalization is called strength.</p>
-<p>Closeness centrality is defined as the inverse of the sum of the distances of the focal node from all the other nodes in the network. Closeness is the average shortest path between a given node and the remaining nodes in the network. Nodes with higher closeness are more proximally connected to the rest of the network.</p>
-<p>Betweenness is the number of times in which a given node lies on the shortest path between two other nodes.</p>
+<p><strong>High centrality</strong> nodes have strong connections to many other nodes, and act as hubs that connect otherwise disparate nodes to one another. <strong>Low centrality</strong> nodes exist on the periphery of the network, with fewer and weaker connections to other nodes of the network.</p>
+<p><strong>Strength</strong> is the sum of the absolute value of its connections with other nodes in the network.</p>
+<p><strong>Closeness</strong> centrality is defined as the inverse of the sum of the distances of the focal node from all the other nodes in the network. Closeness is the average shortest path between a given node and the remaining nodes in the network. Nodes with higher closeness are more proximally connected to the rest of the network.</p>
+<p><strong>Betweenness</strong> is the number of times in which a given node lies on the shortest path between two other nodes.</p>
 <p>The greater the value of centrality indices to one, the more important the variable.</p>
-<pre class="r"><code># Importance
-centralityPlot (nw, include = c(&quot;Strength&quot;, &quot;Closeness&quot;, &quot;Betweenness&quot;), scale = &quot;relative&quot;)</code></pre>
-<p><img src="figure/2-analysis.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>c_fig &lt;- map (res$nw, centralityPlot, include = c(&quot;Closeness&quot;, &quot;Strength&quot;, &quot;Betweenness&quot;),  
+              print = FALSE, scale = &quot;relative&quot;) %&gt;%
+  map (~.x + 
+                  scale_x_continuous(breaks= c(0, 0.5, 1), lim = c(0, 1)) + 
+                  theme(text = element_text(size = 20), 
+                        axis.text.x = element_text(angle = 45, hjust = 1)), 
+              include = &quot;all&quot;, print = FALSE, scale = &quot;relative&quot;)
+
+#tiff(width = 15, height = 15, units = &quot;in&quot;, res = 100, file = &quot;output/odi_strength.tiff&quot;)
+cowplot::plot_grid(plotlist = c_fig,  labels = res$id, vjust = 1, hjust = 0, ncol = 2, nrow = 3)</code></pre>
+<p><img src="figure/2-analysis.Rmd/unnamed-chunk-9-1.png" width="864" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#dev.off()</code></pre>
 </div>
 <div id="plot-centrality-stability" class="section level3">
 <h3>Plot centrality stability</h3>
-<pre class="r"><code># Centrality stability
-plot (centr_stb, statistics = c(&quot;closeness&quot;, &quot;strength&quot;, &quot;betweenness&quot;))</code></pre>
-<p><img src="figure/2-analysis.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
-</div>
-</div>
-</div>
-<div id="clustering" class="section level1">
-<h1>Clustering</h1>
-<div id="preprocess-1" class="section level2">
-<h2>Preprocess</h2>
-<pre class="r"><code>mat &lt;- scale(mat)</code></pre>
-</div>
-<div id="get-distance-measure" class="section level2">
-<h2>Get distance measure</h2>
-<pre class="r"><code>mat_dist &lt;- dist(mat, method = &quot;euclidean&quot;)
-fviz_dist(mat_dist)</code></pre>
-<p><img src="figure/2-analysis.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>res.hc &lt;- hclust(d = mat_dist, method = &quot;ward.D2&quot;)
-# Compute cophentic distance
-res.coph &lt;- cophenetic(res.hc)
+<pre class="r"><code># Plot centrality stability
+s_fig &lt;- map (res$centr_stb, plot, statistics = c(&quot;closeness&quot;, &quot;strength&quot;, &quot;betweenness&quot;))
 
-# Correlation between cophenetic distance and
-# the original distance
-cor(mat_dist, res.coph)</code></pre>
-<pre><code>[1] 0.5430002</code></pre>
-</div>
-<div id="optimal-clusters" class="section level2">
-<h2>Optimal clusters</h2>
-<pre class="r"><code># Elbow method
- fviz_nbclust(mat, kmeans, method = &quot;wss&quot;) +
-    geom_vline(xintercept = 4, linetype = 2)+
-  labs(subtitle = &quot;Elbow method&quot;)</code></pre>
-<p><img src="figure/2-analysis.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># Silhouette method
-fviz_nbclust(mat, kmeans, method = &quot;silhouette&quot;)+
-  labs(subtitle = &quot;Silhouette method&quot;)</code></pre>
-<p><img src="figure/2-analysis.Rmd/unnamed-chunk-11-2.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># Gap statistic
-# nboot = 50 to keep the function speedy. 
-# recommended value: nboot= 500 for your analysis.
-# Use verbose = FALSE to hide computing progression.
-set.seed(123)
-fviz_nbclust(mat, kmeans, nstart = 25,  method = &quot;gap_stat&quot;, nboot = 50)+
-  labs(subtitle = &quot;Gap statistic method&quot;)</code></pre>
-<pre><code>Warning: did not converge in 10 iterations
-
-Warning: did not converge in 10 iterations</code></pre>
-<p><img src="figure/2-analysis.Rmd/unnamed-chunk-11-3.png" width="672" style="display: block; margin: auto;" /></p>
-</div>
-<div id="cut-tree-and-visualize" class="section level2">
-<h2>Cut tree and visualize</h2>
-<pre class="r"><code>cut_n &lt;- 4
-
-grp &lt;- cutree(res.hc, k = cut_n )
-
-# Cut in 4 groups and color by groups
-fviz_dend(res.hc, k = cut_n, # Cut in four groups
-          cex = 0.5, # label size
-          k_colors = c(&quot;#2E9FDF&quot;, &quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
-          color_labels_by_k = TRUE, # color labels by groups
-          rect = TRUE)</code></pre>
-<p><img src="figure/2-analysis.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>fviz_cluster(list(data = mat, cluster = grp),
-             axes = 1:2,
-          palette = c(&quot;#2E9FDF&quot;, &quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
-          ellipse.type = &quot;convex&quot;, # Concentration ellipse
-          repel = TRUE, # Avoid label overplotting (slow)
-          show.clust.cent = FALSE, ggtheme = theme_minimal())</code></pre>
-<p><img src="figure/2-analysis.Rmd/unnamed-chunk-12-2.png" width="672" style="display: block; margin: auto;" /></p>
-</div>
-<div id="understand-clusters" class="section level2">
-<h2>Understand clusters</h2>
-<pre class="r"><code>df_grp &lt;- df %&gt;%
-  select (subj, dob, sex, graft, matches (&quot;pre_|aclrsi|rts&quot;))
-df_grp$clus &lt;- factor (grp)
+s_fig &lt;- map (s_fig, ~.x + 
+                ylab (&quot;Ave Corr&quot;) + 
+                  theme(text = element_text(size = 20), 
+                        axis.text.x = element_text(angle = 90, hjust = 1)), 
+              include = &quot;all&quot;, print = FALSE, scale = &quot;relative&quot;)
 
 
-
-tableby(clus ~ sex + pre_sports_level + pre_sports_freq + rts_exp + aclrsi_6 + aclrsi_12 + rts_12 + rts_6,
-        data = na.omit (df_grp)) %&gt;%
-  summary ()</code></pre>
-<table style="width:100%;">
-<colgroup>
-<col width="44%" />
-<col width="9%" />
-<col width="10%" />
-<col width="10%" />
-<col width="9%" />
-<col width="9%" />
-<col width="4%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left"></th>
-<th align="center">1 (N=142)</th>
-<th align="center">2 (N=191)</th>
-<th align="center">3 (N=80)</th>
-<th align="center">4 (N=25)</th>
-<th align="center">Total (N=438)</th>
-<th align="right">p value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><strong>sex</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="right">0.277</td>
-</tr>
-<tr class="even">
-<td align="left">   Female</td>
-<td align="center">68 (47.9%)</td>
-<td align="center">73 (38.2%)</td>
-<td align="center">31 (38.8%)</td>
-<td align="center">12 (48.0%)</td>
-<td align="center">184 (42.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Male</td>
-<td align="center">74 (52.1%)</td>
-<td align="center">118 (61.8%)</td>
-<td align="center">49 (61.2%)</td>
-<td align="center">13 (52.0%)</td>
-<td align="center">254 (58.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left"><strong>pre_sports_level</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="right">0.004</td>
-</tr>
-<tr class="odd">
-<td align="left">   Frequent sports</td>
-<td align="center">80 (56.3%)</td>
-<td align="center">105 (55.0%)</td>
-<td align="center">32 (40.0%)</td>
-<td align="center">13 (52.0%)</td>
-<td align="center">230 (52.5%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   High level competitive sports</td>
-<td align="center">47 (33.1%)</td>
-<td align="center">69 (36.1%)</td>
-<td align="center">43 (53.8%)</td>
-<td align="center">8 (32.0%)</td>
-<td align="center">167 (38.1%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Hihg level competitive sportd</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1 (0.5%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1 (0.2%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Professional athlete</td>
-<td align="center">1 (0.7%)</td>
-<td align="center">4 (2.1%)</td>
-<td align="center">5 (6.2%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">10 (2.3%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Sports sometimes</td>
-<td align="center">14 (9.9%)</td>
-<td align="center">12 (6.3%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">4 (16.0%)</td>
-<td align="center">30 (6.8%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left"><strong>pre_sports_freq</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="right">0.045</td>
-</tr>
-<tr class="odd">
-<td align="left">   1-3 days per week</td>
-<td align="center">64 (45.1%)</td>
-<td align="center">77 (40.3%)</td>
-<td align="center">23 (28.8%)</td>
-<td align="center">11 (44.0%)</td>
-<td align="center">175 (40.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   1-3 times per month</td>
-<td align="center">4 (2.8%)</td>
-<td align="center">4 (2.1%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">2 (8.0%)</td>
-<td align="center">10 (2.3%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   4-7 days per week</td>
-<td align="center">74 (52.1%)</td>
-<td align="center">110 (57.6%)</td>
-<td align="center">57 (71.2%)</td>
-<td align="center">12 (48.0%)</td>
-<td align="center">253 (57.8%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left"><strong>rts_exp</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="right">&lt; 0.001</td>
-</tr>
-<tr class="odd">
-<td align="left">   No</td>
-<td align="center">16 (11.3%)</td>
-<td align="center">5 (2.6%)</td>
-<td align="center">1 (1.2%)</td>
-<td align="center">4 (16.0%)</td>
-<td align="center">26 (5.9%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Yes</td>
-<td align="center">126 (88.7%)</td>
-<td align="center">186 (97.4%)</td>
-<td align="center">79 (98.8%)</td>
-<td align="center">21 (84.0%)</td>
-<td align="center">412 (94.1%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left"><strong>aclrsi_6</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="right">&lt; 0.001</td>
-</tr>
-<tr class="even">
-<td align="left">   Mean (SD)</td>
-<td align="center">36.067 (7.537)</td>
-<td align="center">59.454 (9.847)</td>
-<td align="center">87.129 (6.893)</td>
-<td align="center">13.113 (6.628)</td>
-<td align="center">54.282 (22.033)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Range</td>
-<td align="center">14.000 - 50.000</td>
-<td align="center">42.000 - 89.000</td>
-<td align="center">72.000 - 100.000</td>
-<td align="center">0.000 - 25.833</td>
-<td align="center">0.000 - 100.000</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left"><strong>aclrsi_12</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="right">&lt; 0.001</td>
-</tr>
-<tr class="odd">
-<td align="left">   Mean (SD)</td>
-<td align="center">53.082 (19.985)</td>
-<td align="center">71.691 (17.989)</td>
-<td align="center">89.510 (16.916)</td>
-<td align="center">34.897 (18.179)</td>
-<td align="center">66.813 (23.742)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Range</td>
-<td align="center">0.000 - 100.000</td>
-<td align="center">30.000 - 100.000</td>
-<td align="center">0.000 - 100.000</td>
-<td align="center">13.000 - 85.000</td>
-<td align="center">0.000 - 100.000</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left"><strong>rts_12</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="right">&lt; 0.001</td>
-</tr>
-<tr class="even">
-<td align="left">   No</td>
-<td align="center">73 (51.4%)</td>
-<td align="center">49 (25.7%)</td>
-<td align="center">11 (13.8%)</td>
-<td align="center">19 (76.0%)</td>
-<td align="center">152 (34.7%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Training only</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">2 (1.0%)</td>
-<td align="center">1 (1.2%)</td>
-<td align="center">1 (4.0%)</td>
-<td align="center">4 (0.9%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Yes, at a lower level compared to before injury</td>
-<td align="center">12 (8.5%)</td>
-<td align="center">37 (19.4%)</td>
-<td align="center">9 (11.2%)</td>
-<td align="center">2 (8.0%)</td>
-<td align="center">60 (13.7%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Yes, at the same or higher level compared to before injury</td>
-<td align="center">23 (16.2%)</td>
-<td align="center">44 (23.0%)</td>
-<td align="center">45 (56.2%)</td>
-<td align="center">2 (8.0%)</td>
-<td align="center">114 (26.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Yes, training only</td>
-<td align="center">34 (23.9%)</td>
-<td align="center">59 (30.9%)</td>
-<td align="center">14 (17.5%)</td>
-<td align="center">1 (4.0%)</td>
-<td align="center">108 (24.7%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left"><strong>rts_6</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="right">&lt; 0.001</td>
-</tr>
-<tr class="even">
-<td align="left">   NA</td>
-<td align="center">1 (0.7%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1 (0.2%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   No</td>
-<td align="center">111 (78.2%)</td>
-<td align="center">127 (66.5%)</td>
-<td align="center">37 (46.2%)</td>
-<td align="center">22 (88.0%)</td>
-<td align="center">297 (67.8%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Not applicable, I did not play sport before my knee injury</td>
-<td align="center">1 (0.7%)</td>
-<td align="center">1 (0.5%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1 (4.0%)</td>
-<td align="center">3 (0.7%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Yes, at a lower level compared to before injury</td>
-<td align="center">2 (1.4%)</td>
-<td align="center">11 (5.8%)</td>
-<td align="center">9 (11.2%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">22 (5.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Yes, at the same or higher level compared to before injury</td>
-<td align="center">1 (0.7%)</td>
-<td align="center">1 (0.5%)</td>
-<td align="center">3 (3.8%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">5 (1.1%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Yes, training only</td>
-<td align="center">26 (18.3%)</td>
-<td align="center">50 (26.2%)</td>
-<td align="center">31 (38.8%)</td>
-<td align="center">2 (8.0%)</td>
-<td align="center">109 (24.9%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Ypre</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1 (0.5%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1 (0.2%)</td>
-<td align="right"></td>
-</tr>
-</tbody>
-</table>
+#tiff(width = 15, height = 15, units = &quot;in&quot;, res = 100, file = &quot;output/odi_stability.tiff&quot;)
+cowplot::plot_grid(plotlist = s_fig, labels = res$id, vjust = 1, hjust = 0, ncol = 2, nrow = 3)</code></pre>
+<p><img src="figure/2-analysis.Rmd/unnamed-chunk-10-1.png" width="864" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#dev.off()</code></pre>
+</div>
+</div>
+<div id="compare-networks" class="section level2">
+<h2>Compare networks</h2>
+<div id="compare-the-networks-for-the-rsi-at-6th-and-12th-months" class="section level3">
+<h3>Compare the networks for the RSI at 6th and 12th months</h3>
+<pre class="r"><code>pair_res &lt;- NCT (res$nw[[1]], 
+             res$nw[[2]],
+             it = 1000,
+             paired = TRUE,
+             test.edges = TRUE,
+             progressbar = FALSE,
+             test.centrality = TRUE,
+             p.adjust.methods = &quot;none&quot;,
+             centrality = c(&quot;closeness&quot;, &quot;strength&quot;, &quot;betweenness&quot;))</code></pre>
+<p>The networks between the 6th and 12th month are not significantly different (p = 0.688).</p>
+<div id="edges-which-are-different-between-networks" class="section level4">
+<h4>Edges which are different between networks</h4>
+<pre class="r"><code>pair_res$einv.pvals %&gt;%
+  filter (`p-value` &lt; 0.05)</code></pre>
+<pre><code>  Var1 Var2 p-value
+1   q6   q8   0.025
+2   q4  q11   0.023
+3   q8  q11   0.040</code></pre>
+</div>
+<div id="centralities-which-are-different-between-networks" class="section level4">
+<h4>Centralities which are different between networks</h4>
+<pre class="r"><code>pair_res$diffcen.pval %&gt;%
+  as.data.frame() %&gt;%
+  filter_all (any_vars(. &lt; 0.05))</code></pre>
+<pre><code>   closeness strength betweenness
+q6     0.918    0.009           1</code></pre>
+</div>
+</div>
+<div id="compare-the-networks-for-the-rsi-at-6th-month-for-those-whose-rts-value-at-6mo-was-no-vs-yes" class="section level3">
+<h3>Compare the networks for the RSI at 6th month for those whose RTS value at 6mo was no vs yes</h3>
+<pre class="r"><code>pair_res &lt;- NCT (res$nw[[3]], 
+             res$nw[[4]],
+             it = 1000,
+             paired = FALSE,
+             test.edges = TRUE,
+             progressbar = FALSE,
+             test.centrality = TRUE,
+             p.adjust.methods = &quot;none&quot;,
+             centrality = c(&quot;closeness&quot;, &quot;strength&quot;, &quot;betweenness&quot;))</code></pre>
+<p>The networks are not significantly different (p = 0.202).</p>
+<div id="edges-which-are-different-between-networks-1" class="section level4">
+<h4>Edges which are different between networks</h4>
+<pre class="r"><code>pair_res$einv.pvals %&gt;%
+  filter (`p-value` &lt; 0.05)</code></pre>
+<pre><code>  Var1 Var2 p-value
+1   q4   q6   0.018
+2   q5   q8   0.044
+3   q6   q8   0.033
+4   q3   q9   0.002
+5   q7  q11   0.038
+6   q7  q12   0.028</code></pre>
+</div>
+<div id="centralities-which-are-different-between-networks-1" class="section level4">
+<h4>Centralities which are different between networks</h4>
+<pre class="r"><code>pair_res$diffcen.pval %&gt;%
+  as.data.frame() %&gt;%
+  filter_all (any_vars(. &lt; 0.05))</code></pre>
+<pre><code>   closeness strength betweenness
+q7     0.090    0.004       0.075
+q8     0.853    0.042       0.406</code></pre>
+</div>
+</div>
+<div id="compare-the-networks-for-the-rsi-at-12th-month-for-those-whose-rts-value-at-12mo-was-no-vs-yes" class="section level3">
+<h3>Compare the networks for the RSI at 12th month for those whose RTS value at 12mo was no vs yes</h3>
+<pre class="r"><code>pair_res &lt;- NCT (res$nw[[5]], 
+             res$nw[[6]],
+             it = 1000,
+             paired = FALSE,
+             test.edges = TRUE,
+             progressbar = FALSE,
+             test.centrality = TRUE,
+             p.adjust.methods = &quot;none&quot;,
+             centrality = c(&quot;closeness&quot;, &quot;strength&quot;, &quot;betweenness&quot;))</code></pre>
+<p>The networks are not significantly different (p = 0.36).</p>
+<div id="edges-which-are-different-between-networks-2" class="section level4">
+<h4>Edges which are different between networks</h4>
+<pre class="r"><code>pair_res$einv.pvals %&gt;%
+  filter (`p-value` &lt; 0.05)</code></pre>
+<pre><code>  Var1 Var2 p-value
+1   q5  q12   0.031</code></pre>
+</div>
+<div id="centralities-which-are-different-between-networks-2" class="section level4">
+<h4>Centralities which are different between networks</h4>
+<pre class="r"><code>pair_res$diffcen.pval %&gt;%
+  as.data.frame() %&gt;%
+  filter_all (any_vars(. &lt; 0.05))</code></pre>
+<pre><code>[1] closeness   strength    betweenness
+&lt;0 rows&gt; (or 0-length row.names)</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1184,64 +933,69 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] FactoMineR_2.4   factoextra_1.0.7 qgraph_1.6.5     bootnet_1.4.6   
- [5] huge_1.3.4.1     arsenal_3.5.0    forcats_0.5.0    stringr_1.4.0   
- [9] dplyr_1.0.2      purrr_0.3.4      readr_1.4.0      tidyr_1.1.2     
-[13] tibble_3.0.4     ggplot2_3.3.3    tidyverse_1.3.0  workflowr_1.6.2 
+ [1] kableExtra_1.3.1            furrr_0.2.1                
+ [3] future_1.21.0               NetworkComparisonTest_2.2.1
+ [5] qgraph_1.6.5                bootnet_1.4.6              
+ [7] huge_1.3.4.1                cowplot_1.1.1              
+ [9] arsenal_3.5.0               forcats_0.5.0              
+[11] stringr_1.4.0               dplyr_1.0.2                
+[13] purrr_0.3.4                 readr_1.4.0                
+[15] tidyr_1.1.2                 tibble_3.0.4               
+[17] ggplot2_3.3.3               tidyverse_1.3.0            
 
 loaded via a namespace (and not attached):
   [1] R.utils_2.10.1       tidyselect_1.1.0     htmlwidgets_1.5.3   
   [4] grid_4.0.2           munsell_0.5.0        codetools_0.2-18    
-  [7] DT_0.17              withr_2.3.0          colorspace_2.0-0    
- [10] NetworkToolbox_1.4.1 highr_0.8            knitr_1.30          
- [13] rstudioapi_0.13      leaps_3.1            stats4_4.0.2        
- [16] ggsignif_0.6.0       labeling_0.4.2       git2r_0.27.1        
- [19] mnormt_2.0.2         farver_2.0.3         rprojroot_2.0.2     
- [22] vctrs_0.3.6          generics_0.1.0       xfun_0.20           
- [25] R6_2.5.0             doParallel_1.0.16    smacof_2.1-1        
- [28] reshape_0.8.8        assertthat_0.2.1     promises_1.1.1      
- [31] scales_1.1.1         nnet_7.3-14          gtable_0.3.0        
- [34] weights_1.0.1        rlang_0.4.10         scatterplot3d_0.3-41
- [37] splines_4.0.2        rstatix_0.6.0        wordcloud_2.6       
- [40] broom_0.7.4.9000     checkmate_2.0.0      yaml_2.2.1          
- [43] reshape2_1.4.4       abind_1.4-5          modelr_0.1.8        
- [46] d3Network_0.5.2.1    backports_1.2.0      httpuv_1.5.4        
- [49] Hmisc_4.4-2          tools_4.0.2          psych_2.0.12        
- [52] lavaan_0.6-7         ellipsis_0.3.1       RColorBrewer_1.1-2  
- [55] polynom_1.4-0        Rcpp_1.0.6           plyr_1.8.6          
- [58] base64enc_0.1-3      ps_1.5.0             ggpubr_0.4.0        
- [61] rpart_4.1-15         viridis_0.5.1        pbapply_1.4-3       
- [64] haven_2.3.1          ggrepel_0.9.0        cluster_2.1.0       
- [67] fs_1.5.0             survey_4.0           magrittr_2.0.1      
- [70] data.table_1.13.6    openxlsx_4.2.3       reprex_0.3.0        
- [73] tmvnsim_1.0-2        mvtnorm_1.1-1        matrixcalc_1.0-3    
- [76] whisker_0.4          hms_0.5.3            evaluate_0.14       
- [79] rio_0.5.16           jpeg_0.1-8.1         readxl_1.3.1        
- [82] gridExtra_2.3        shape_1.4.5          compiler_4.0.2      
- [85] ellipse_0.4.2        mice_3.12.0          GGMncv_2.0.0        
- [88] crayon_1.3.4         R.oo_1.24.0          htmltools_0.5.0     
- [91] corpcor_1.6.9        later_1.1.0.1        Formula_1.2-4       
- [94] snow_0.4-3           lubridate_1.7.9.2    DBI_1.1.0           
- [97] relaimpo_2.2-3       mgm_1.2-10           dbplyr_2.0.0        
-[100] MASS_7.3-53          boot_1.3-25          IsingSampler_0.2.1  
-[103] Matrix_1.2-18        IsingFit_0.3.1       car_3.0-10          
-[106] cli_2.2.0            heplots_1.3-7        mitools_2.4         
-[109] R.methodsS3_1.8.1    gdata_2.18.0         parallel_4.0.2      
-[112] igraph_1.2.6         BDgraph_2.63         pkgconfig_2.0.3     
-[115] flashClust_1.01-2    numDeriv_2016.8-1.1  foreign_0.8-81      
-[118] xml2_1.3.2           foreach_1.5.1        pbivnorm_0.6.0      
-[121] rvest_0.3.6          digest_0.6.27        rmarkdown_2.6       
-[124] cellranger_1.1.0     htmlTable_2.1.0      dendextend_1.14.0   
-[127] glassoFast_1.0       curl_4.3             gtools_3.8.2        
-[130] rjson_0.2.20         lifecycle_0.2.0      nlme_3.1-151        
-[133] glasso_1.11          jsonlite_1.7.2       carData_3.0-4       
-[136] viridisLite_0.3.0    fansi_0.4.1          pillar_1.4.7        
-[139] lattice_0.20-41      httr_1.4.2           plotrix_3.7-8       
-[142] survival_3.2-7       glue_1.4.2           networktools_1.2.3  
-[145] zip_2.1.1            fdrtool_1.2.16       png_0.1-7           
-[148] iterators_1.0.13     candisc_0.8-3        glmnet_4.0-2        
-[151] class_7.3-17         stringi_1.5.3        nnls_1.4            
-[154] latticeExtra_0.6-29  eigenmodel_1.11      e1071_1.7-4         </code></pre>
+  [7] withr_2.3.0          colorspace_2.0-0     NetworkToolbox_1.4.1
+ [10] highr_0.8            knitr_1.30           rstudioapi_0.13     
+ [13] stats4_4.0.2         listenv_0.8.0        labeling_0.4.2      
+ [16] git2r_0.27.1         mnormt_2.0.2         farver_2.0.3        
+ [19] rprojroot_2.0.2      parallelly_1.23.0    vctrs_0.3.6         
+ [22] generics_0.1.0       xfun_0.20            R6_2.5.0            
+ [25] doParallel_1.0.16    smacof_2.1-1         reshape_0.8.8       
+ [28] assertthat_0.2.1     promises_1.1.1       scales_1.1.1        
+ [31] nnet_7.3-14          gtable_0.3.0         globals_0.14.0      
+ [34] weights_1.0.1        workflowr_1.6.2      rlang_0.4.10        
+ [37] splines_4.0.2        wordcloud_2.6        broom_0.7.4.9000    
+ [40] checkmate_2.0.0      yaml_2.2.1           reshape2_1.4.4      
+ [43] abind_1.4-5          modelr_0.1.8         d3Network_0.5.2.1   
+ [46] backports_1.2.0      httpuv_1.5.4         Hmisc_4.4-2         
+ [49] tools_4.0.2          psych_2.0.12         lavaan_0.6-7        
+ [52] ellipsis_0.3.1       RColorBrewer_1.1-2   polynom_1.4-0       
+ [55] Rcpp_1.0.6           plyr_1.8.6           base64enc_0.1-3     
+ [58] rpart_4.1-15         pbapply_1.4-3        haven_2.3.1         
+ [61] cluster_2.1.0        fs_1.5.0             survey_4.0          
+ [64] magrittr_2.0.1       data.table_1.13.6    openxlsx_4.2.3      
+ [67] reprex_0.3.0         tmvnsim_1.0-2        mvtnorm_1.1-1       
+ [70] matrixcalc_1.0-3     whisker_0.4          hms_0.5.3           
+ [73] evaluate_0.14        rio_0.5.16           jpeg_0.1-8.1        
+ [76] readxl_1.3.1         gridExtra_2.3        shape_1.4.5         
+ [79] compiler_4.0.2       ellipse_0.4.2        mice_3.12.0         
+ [82] GGMncv_2.0.0         crayon_1.3.4         R.oo_1.24.0         
+ [85] htmltools_0.5.0      corpcor_1.6.9        later_1.1.0.1       
+ [88] Formula_1.2-4        snow_0.4-3           lubridate_1.7.9.2   
+ [91] DBI_1.1.0            relaimpo_2.2-3       mgm_1.2-10          
+ [94] dbplyr_2.0.0         MASS_7.3-53          boot_1.3-25         
+ [97] IsingSampler_0.2.1   Matrix_1.2-18        IsingFit_0.3.1      
+[100] car_3.0-10           cli_2.2.0            heplots_1.3-7       
+[103] mitools_2.4          R.methodsS3_1.8.1    gdata_2.18.0        
+[106] parallel_4.0.2       igraph_1.2.6         BDgraph_2.63        
+[109] pkgconfig_2.0.3      numDeriv_2016.8-1.1  foreign_0.8-81      
+[112] xml2_1.3.2           foreach_1.5.1        pbivnorm_0.6.0      
+[115] webshot_0.5.2        rvest_0.3.6          digest_0.6.27       
+[118] rmarkdown_2.6        cellranger_1.1.0     htmlTable_2.1.0     
+[121] glassoFast_1.0       curl_4.3             gtools_3.8.2        
+[124] rjson_0.2.20         lifecycle_0.2.0      nlme_3.1-151        
+[127] glasso_1.11          jsonlite_1.7.2       carData_3.0-4       
+[130] viridisLite_0.3.0    fansi_0.4.1          pillar_1.4.7        
+[133] lattice_0.20-41      httr_1.4.2           plotrix_3.7-8       
+[136] survival_3.2-7       glue_1.4.2           networktools_1.2.3  
+[139] zip_2.1.1            fdrtool_1.2.16       png_0.1-7           
+[142] iterators_1.0.13     candisc_0.8-3        glmnet_4.0-2        
+[145] class_7.3-17         stringi_1.5.3        nnls_1.4            
+[148] latticeExtra_0.6-29  eigenmodel_1.11      e1071_1.7-4         </code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
