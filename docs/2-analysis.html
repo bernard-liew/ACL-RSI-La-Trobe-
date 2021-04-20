@@ -15,6 +15,7 @@
 
 <title>2-analysis</title>
 
+<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -37,6 +38,8 @@ div.section {
   padding-top: 12px;
 }
 </style>
+
+
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -417,7 +420,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-02-23
+<strong>Last updated:</strong> 2021-04-20
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -508,16 +511,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcombernardliewACLRSILaTrobetree1b00161c4a99919fb20d30a8cdf81f1f628d6a38targetblank1b00161a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/bernard-liew/ACL-RSI-La-Trobe-/tree/1b00161c4a99919fb20d30a8cdf81f1f628d6a38" target="_blank">1b00161</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcombernardliewACLRSILaTrobetree89ef5ec4deb29842442128011f89805f2752214ctargetblank89ef5eca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/bernard-liew/ACL-RSI-La-Trobe-/tree/89ef5ec4deb29842442128011f89805f2752214c" target="_blank">89ef5ec</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcombernardliewACLRSILaTrobetree1b00161c4a99919fb20d30a8cdf81f1f628d6a38targetblank1b00161a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcombernardliewACLRSILaTrobetree89ef5ec4deb29842442128011f89805f2752214ctargetblank89ef5eca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/bernard-liew/ACL-RSI-La-Trobe-/tree/1b00161c4a99919fb20d30a8cdf81f1f628d6a38" target="_blank">1b00161</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/bernard-liew/ACL-RSI-La-Trobe-/tree/89ef5ec4deb29842442128011f89805f2752214c" target="_blank">89ef5ec</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -526,9 +529,7 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-
-Untracked files:
-    Untracked:  output/nw_res.RDS
+    Ignored:    manuscript/
 
 Unstaged changes:
     Modified:   analysis/2-analysis.Rmd
@@ -570,6 +571,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/bernard-liew/ACL-RSI-La-Trobe-/blob/89ef5ec4deb29842442128011f89805f2752214c/analysis/2-analysis.Rmd" target="_blank">89ef5ec</a>
+</td>
+<td>
+Bernard
+</td>
+<td>
+2021-04-20
+</td>
+<td>
+tidied codes
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/bernard-liew/ACL-RSI-La-Trobe-/blob/0593a54f2cb5b3bd394b1e7cf0d3c202c10c2cc3/analysis/2-analysis.Rmd" target="_blank">0593a54</a>
+</td>
+<td>
+bernard-liew
+</td>
+<td>
+2021-02-23
+</td>
+<td>
+updated network analysis, removed cluster
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/bernard-liew/ACL-RSI-La-Trobe-/0593a54f2cb5b3bd394b1e7cf0d3c202c10c2cc3/docs/2-analysis.html" target="_blank">0593a54</a>
+</td>
+<td>
+bernard-liew
+</td>
+<td>
+2021-02-23
+</td>
+<td>
+updated network analysis, removed cluster
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -758,12 +810,18 @@ saveRDS(res,
 <p>The thickness of the edges indicate the magnitude of correlation.</p>
 <pre class="r"><code>par(mfrow= c(3,2))
 # Visualize network
-p1 &lt;- plot (res$nw[[1]], title = res$id[[1]], label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
-plot (res$nw[[2]], title = res$id[[2]], layout = p1$layout, label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
-plot (res$nw[[3]], title = res$id[[3]], layout = p1$layout, label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
-plot (res$nw[[4]], title = res$id[[4]], layout = p1$layout, label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
-plot (res$nw[[5]], title = res$id[[5]], layout = p1$layout, label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
-plot (res$nw[[6]], title = res$id[[6]], layout = p1$layout, label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)</code></pre>
+p1 &lt;- plot (res$nw[[1]], title = res$id[[1]], label.cex = 1.5, 
+            vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
+plot (res$nw[[2]], title = res$id[[2]], layout = p1$layout, label.cex = 1.5,
+      vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
+plot (res$nw[[3]], title = res$id[[3]], layout = p1$layout, label.cex = 1.5, 
+      vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
+plot (res$nw[[4]], title = res$id[[4]], layout = p1$layout, label.cex = 1.5, 
+      vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
+plot (res$nw[[5]], title = res$id[[5]], layout = p1$layout, label.cex = 1.5, 
+      vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
+plot (res$nw[[6]], title = res$id[[6]], layout = p1$layout, label.cex = 1.5, 
+      vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)</code></pre>
 <p><img src="figure/2-analysis.Rmd/unnamed-chunk-7-1.png" width="864" style="display: block; margin: auto;" /></p>
 </div>
 <div id="plot-edge-weights-stability" class="section level3">
@@ -829,7 +887,6 @@ cowplot::plot_grid(plotlist = s_fig, labels = res$id, vjust = 1, hjust = 0, ncol
              test.centrality = TRUE,
              p.adjust.methods = &quot;none&quot;,
              centrality = c(&quot;closeness&quot;, &quot;strength&quot;, &quot;betweenness&quot;))</code></pre>
-<p>The networks between the 6th and 12th month are not significantly different (p = 0.688).</p>
 <div id="edges-which-are-different-between-networks" class="section level4">
 <h4>Edges which are different between networks</h4>
 <pre class="r"><code>pair_res$einv.pvals %&gt;%
@@ -859,7 +916,6 @@ q6     0.918    0.009           1</code></pre>
              test.centrality = TRUE,
              p.adjust.methods = &quot;none&quot;,
              centrality = c(&quot;closeness&quot;, &quot;strength&quot;, &quot;betweenness&quot;))</code></pre>
-<p>The networks are not significantly different (p = 0.202).</p>
 <div id="edges-which-are-different-between-networks-1" class="section level4">
 <h4>Edges which are different between networks</h4>
 <pre class="r"><code>pair_res$einv.pvals %&gt;%
@@ -893,7 +949,6 @@ q8     0.853    0.042       0.406</code></pre>
              test.centrality = TRUE,
              p.adjust.methods = &quot;none&quot;,
              centrality = c(&quot;closeness&quot;, &quot;strength&quot;, &quot;betweenness&quot;))</code></pre>
-<p>The networks are not significantly different (p = 0.36).</p>
 <div id="edges-which-are-different-between-networks-2" class="section level4">
 <h4>Edges which are different between networks</h4>
 <pre class="r"><code>pair_res$einv.pvals %&gt;%
@@ -950,7 +1005,7 @@ loaded via a namespace (and not attached):
  [10] highr_0.8            knitr_1.30           rstudioapi_0.13     
  [13] stats4_4.0.2         listenv_0.8.0        labeling_0.4.2      
  [16] git2r_0.27.1         mnormt_2.0.2         farver_2.0.3        
- [19] rprojroot_2.0.2      parallelly_1.23.0    vctrs_0.3.6         
+ [19] rprojroot_2.0.2      parallelly_1.24.0    vctrs_0.3.6         
  [22] generics_0.1.0       xfun_0.20            R6_2.5.0            
  [25] doParallel_1.0.16    smacof_2.1-1         reshape_0.8.8       
  [28] assertthat_0.2.1     promises_1.1.1       scales_1.1.1        
@@ -959,13 +1014,13 @@ loaded via a namespace (and not attached):
  [37] splines_4.0.2        wordcloud_2.6        broom_0.7.4.9000    
  [40] checkmate_2.0.0      yaml_2.2.1           reshape2_1.4.4      
  [43] abind_1.4-5          modelr_0.1.8         d3Network_0.5.2.1   
- [46] backports_1.2.0      httpuv_1.5.4         Hmisc_4.4-2         
+ [46] backports_1.2.1      httpuv_1.5.4         Hmisc_4.4-2         
  [49] tools_4.0.2          psych_2.0.12         lavaan_0.6-7        
  [52] ellipsis_0.3.1       RColorBrewer_1.1-2   polynom_1.4-0       
  [55] Rcpp_1.0.6           plyr_1.8.6           base64enc_0.1-3     
  [58] rpart_4.1-15         pbapply_1.4-3        haven_2.3.1         
  [61] cluster_2.1.0        fs_1.5.0             survey_4.0          
- [64] magrittr_2.0.1       data.table_1.13.6    openxlsx_4.2.3      
+ [64] magrittr_2.0.1       data.table_1.14.0    openxlsx_4.2.3      
  [67] reprex_0.3.0         tmvnsim_1.0-2        mvtnorm_1.1-1       
  [70] matrixcalc_1.0-3     whisker_0.4          hms_0.5.3           
  [73] evaluate_0.14        rio_0.5.16           jpeg_0.1-8.1        
@@ -1012,6 +1067,8 @@ footer is added to webpages before the MathJax javascript. -->
     "HTML-CSS": { availableFonts: ["TeX"] }
   });
 </script>
+
+
 
 
 </div>

@@ -43,12 +43,13 @@ df <- readRDS ("output/dat_acl.RDS") %>%
           rts_12binary = ifelse (rts_12 %in% c("no", "yes_lower"), "no", "yes"))
 
 
-sf <- paste0("q", c(1,2,3,5,6,7)) 
-node_col <- ifelse (names (res$data[[1]]) %in% sf, "blue", "white")
 ```
 
 ```{r, include = FALSE}
 res <- readRDS ("output/nw_res.RDS")
+
+sf <- paste0("q", c(1,2,3,5,6,7)) 
+node_col <- ifelse (names (res$data[[1]]) %in% sf, "lightblue", "white")
 ```
 
 
@@ -264,7 +265,6 @@ pair_res <- NCT (res$nw[[1]],
              centrality = c("closeness", "strength", "betweenness"))
 ```
 
-The networks between the 6th and 12th month are not significantly different (p = `r pair_res$nwinv.pval`). 
 
 #### Edges which are different between networks
 
@@ -295,7 +295,6 @@ pair_res <- NCT (res$nw[[3]],
              centrality = c("closeness", "strength", "betweenness"))
 ```
 
-The networks are not significantly different (p = `r pair_res$nwinv.pval`). 
 
 #### Edges which are different between networks
 
@@ -314,7 +313,7 @@ pair_res$diffcen.pval %>%
 
 ### Compare the networks for the RSI at 12th month for those whose RTS value at 12mo was no vs yes
 
-```{r, message=FALSE, warning=FALSE, eval = FALSE}
+```{r, message=FALSE, warning=FALSE}
 pair_res <- NCT (res$nw[[5]], 
              res$nw[[6]],
              it = 1000,
@@ -327,7 +326,6 @@ pair_res <- NCT (res$nw[[5]],
 
 ```
 
-The networks are not significantly different (p = `r pair_res$nwinv.pval`). 
 
 #### Edges which are different between networks
 
