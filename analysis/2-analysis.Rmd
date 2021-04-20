@@ -41,6 +41,10 @@ df <- readRDS ("output/dat_acl.RDS") %>%
   mutate (rts_6binary = ifelse (rts_6 %in% c("na_no_prior", "no"), "no", 
                                 ifelse (rts_6 %in% c("NA"), "na", "yes")),
           rts_12binary = ifelse (rts_12 %in% c("no", "yes_lower"), "no", "yes"))
+
+
+sf <- paste0("q", c(1,2,3,5,6,7)) 
+node_col <- ifelse (names (res$data[[1]]) %in% sf, "blue", "white")
 ```
 
 ```{r, include = FALSE}
@@ -167,12 +171,18 @@ var_table %>%
 
 par(mfrow= c(3,2))
 # Visualize network
-p1 <- plot (res$nw[[1]], title = res$id[[1]], label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
-plot (res$nw[[2]], title = res$id[[2]], layout = p1$layout, label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
-plot (res$nw[[3]], title = res$id[[3]], layout = p1$layout, label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
-plot (res$nw[[4]], title = res$id[[4]], layout = p1$layout, label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
-plot (res$nw[[5]], title = res$id[[5]], layout = p1$layout, label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
-plot (res$nw[[6]], title = res$id[[6]], layout = p1$layout, label.cex = 1.5, vsize = 10, curve = 0.4, curveAll = TRUE)
+p1 <- plot (res$nw[[1]], title = res$id[[1]], label.cex = 1.5, 
+            vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
+plot (res$nw[[2]], title = res$id[[2]], layout = p1$layout, label.cex = 1.5,
+      vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
+plot (res$nw[[3]], title = res$id[[3]], layout = p1$layout, label.cex = 1.5, 
+      vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
+plot (res$nw[[4]], title = res$id[[4]], layout = p1$layout, label.cex = 1.5, 
+      vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
+plot (res$nw[[5]], title = res$id[[5]], layout = p1$layout, label.cex = 1.5, 
+      vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
+plot (res$nw[[6]], title = res$id[[6]], layout = p1$layout, label.cex = 1.5, 
+      vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
 ```
 
 ### Plot edge weights stability
@@ -304,7 +314,7 @@ pair_res$diffcen.pval %>%
 
 ### Compare the networks for the RSI at 12th month for those whose RTS value at 12mo was no vs yes
 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, eval = FALSE}
 pair_res <- NCT (res$nw[[5]], 
              res$nw[[6]],
              it = 1000,
