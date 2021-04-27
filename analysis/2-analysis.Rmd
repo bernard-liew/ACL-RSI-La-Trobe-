@@ -20,6 +20,7 @@ library (huge)
 library (bootnet)
 library (qgraph)
 library (NetworkComparisonTest)
+library (EGAnet)
 
 # Parallel
 library (furrr)
@@ -247,6 +248,108 @@ s_fig <- map (s_fig, ~.x +
 #tiff(width = 15, height = 15, units = "in", res = 100, file = "output/odi_stability.tiff")
 cowplot::plot_grid(plotlist = s_fig, labels = res$id, vjust = 1, hjust = 0, ncol = 2, nrow = 3)
 #dev.off()
+```
+
+## Exploratory graphical analysis
+
+```{reval = FALSE}
+res <- res %>%
+  mutate (ega = map (dat_norm, 
+                     EGA, 
+                     cor = "pearson",
+                     model = "glasso",
+                     model.args = list (tuning = 0.5,
+                      lambda.min.ratio = 0.001,
+                      corArgs =
+                        list(method = "pearson",
+                             use = "pairwise.complete.obs")),
+                     algorithm = "walktrap",
+                     plot.EGA = FALSE)) %>%
+  mutate (cfa = pmap (list (ega.obj = ega, 
+                            data = dat_norm),
+                      CFA,
+                      estimator = "WLSMV",
+                      plot.CFA = FALSE)) 
+
+# Bootstrap
+ega_boot <- vector("list", length (res$id))
+for (n in seq_along (res$id)) {
+  
+  ega_boot[[n]] <- bootEGA (res$dat_norm [[n]],
+                             iter = 1000,
+                             type = "resampling",
+                             cor = "pearson",
+                             model = "glasso",
+                             algorithm = "walktrap",
+                             plot.EGA = FALSE)
+}
+res$ega_boot <- ega_boot
+
+```
+
+## Report EGA
+
+```{r, fig.height=12, fig.width=9}
+node_font_size <- 1.5
+circle_size <- 12
+title_font_size <- 1.5
+legend_font_size <- 3
+
+par (mfrow = c(3,2))
+qgraph (res$ega[[1]]$network, groups = as.factor (res$ega[[1]]$wc), title = "6mo", layout = p1$layout, label.cex = node_font_size, vsize = circle_size, shape = "circle", title.cex = title_font_size)
+qgraph (res$ega[[2]]$network, groups = as.factor (res$ega[[2]]$wc), title = "12mo", layout = p1$layout, label.cex = node_font_size, vsize = circle_size, shape = "circle", title.cex = title_font_size)
+qgraph (res$ega[[3]]$network, groups = as.factor (res$ega[[3]]$wc),title = "6mo No", layout = p1$layout, label.cex = node_font_size, vsize = circle_size, shape = "circle", title.cex = title_font_size)
+qgraph (res$ega[[4]]$network, groups = as.factor (res$ega[[4]]$wc),title = "6m Yes", layout = p1$layout, label.cex = node_font_size, vsize = circle_size, shape = "circle", title.cex = title_font_size)
+qgraph (res$ega[[3]]$network, groups = as.factor (res$ega[[5]]$wc),title = "12mo No", layout = p1$layout, label.cex = node_font_size, vsize = circle_size, shape = "circle", title.cex = title_font_size)
+qgraph (res$ega[[4]]$network, groups = as.factor (res$ega[[6]]$wc),title = "12m Yes", layout = p1$layout, label.cex = node_font_size, vsize = circle_size, shape = "circle", title.cex = title_font_size)
+
+```
+
+## Stability
+
+```{r, eval = FALSE}
+ega_boot_stb <- vector("list", length (res$id))
+
+for (n in seq_along (res$id)) {
+  
+  ega_boot_stb[[n]] <- dimStability (res$ega_boot[[n]], orig.wc = res$ega[[n]]$wc)
+}
+
+res$ega_boot_stb <- ega_boot_stb
+```
+
+### Summary table
+
+```{r}
+
+sum_df <- list()
+
+for (n in seq_along (res$id)) {
+  
+  sum_df[[n]] <- res$ega_boot[[n]]$summary.table
+}
+
+
+sum_df <- bind_rows(sum_df) %>%
+  mutate_if (is.numeric, round, 2)
+
+sum_df$id <- res$id
+
+
+sum_df
+```
+
+### Frequency 
+
+```{r}
+boot_freq <- res$ega_boot %>%
+  map (pluck, "frequency") %>%
+  map (as.data.frame)
+
+names (boot_freq) <- res$id
+boot_freq <-  bind_rows(boot_freq, .id = "id") 
+
+boot_freq
 ```
 
 ## Compare networks
