@@ -27,6 +27,8 @@ library (furrr)
 
 # Styling
 library (kableExtra)
+library (officer)
+library (flextable)
 
 ```
 
@@ -53,6 +55,40 @@ sf <- paste0("q", c(1,2,3,5,6,7))
 node_col <- ifelse (names (res$data[[1]]) %in% sf, "lightblue", "white")
 ```
 
+
+# Descriptive statistics 
+
+```{r}
+df_plot <- res %>%
+  select (id,data) %>%
+  unnest (data) %>%
+  pivot_longer(cols = starts_with("q"),
+               names_to = "Items",
+               values_to = "val") %>%
+  mutate (Items = factor (Items, levels = names (res$data[[1]])))
+
+df_plot <- df_plot %>%
+  group_by(id, Items) %>%
+  summarise(Mean = mean (val, na.rm = TRUE),
+            Sd = sd (val, na.rm = TRUE)) %>%
+  mutate (id = factor (id, levels = c("6mo","12mo","6moNo","6moYes","12moNo", "12moYes")))
+
+ f <- ggplot (df_plot) +
+  geom_point(aes (x = Items, y = Mean),  
+             stat = "identity") +
+  geom_errorbar(aes (x = Items, 
+                     ymin = Mean - Sd, 
+                     ymax = Mean + Sd), 
+                width = 0) +
+  facet_wrap(~ id, scales = "fixed", ncol = 2) +
+  labs (x = "Items",
+        y = "Score") +
+  theme_cowplot() 
+
+pdf(width = 15, height = 8, file = "manuscript/sm_fig1.pdf")
+f
+dev.off()
+```
 
 # Network analysis
 
@@ -145,46 +181,77 @@ saveRDS(res,
 
 The thickness of the edges indicate the magnitude of correlation.
 
-```{r, include = FALSE}
-var_table <- data.frame(nodes = paste0("q", 1:12))
-
-qn <- c("Are you confident that you can perform at your previous level of sport participation?",
-        "Do you think you are likely to re-injury your knee by participating in your sport?",
-        "Are you nervous about playing your sport?",
-        "Are you confident that your knee will not give way by playing your sport?",
-        "Are you confident that you could play your sport without concern for your knee?",
-        "Do you find it frustrating to have to consider your knee with respect to your sport?",
-        "Are you fearful of re-injuring your knee by playing your sport?",
-        "Are you confident about your knee holding up under pressure?",
-        "Are you afraid of accidentally injuring your knee by playing your sport?",
-        "Do thoughts of having to go through surgery and rehabilitation prevent you from playing your sport?",
-        "Are you confident about your ability to perform well at your sport?",
-        "Do you feel relaxed about playing your sport?")
-
-var_table$qn <- qn
-
-var_table %>%
-  kable () %>%
-  kable_styling()
-```
-
-
 ```{r message=FALSE, warning=FALSE, fig.height=9, fig.width=9}
+
+node_font_size <- 1.5
+circle_size <- 12
+title_font_size <- 3
+legend_font_size <- 2
 
 par(mfrow= c(3,2))
 # Visualize network
-p1 <- plot (res$nw[[1]], title = res$id[[1]], label.cex = 1.5, 
-            vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
-plot (res$nw[[2]], title = res$id[[2]], layout = p1$layout, label.cex = 1.5,
-      vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
-plot (res$nw[[3]], title = res$id[[3]], layout = p1$layout, label.cex = 1.5, 
-      vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
-plot (res$nw[[4]], title = res$id[[4]], layout = p1$layout, label.cex = 1.5, 
-      vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
-plot (res$nw[[5]], title = res$id[[5]], layout = p1$layout, label.cex = 1.5, 
-      vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
-plot (res$nw[[6]], title = res$id[[6]], layout = p1$layout, label.cex = 1.5, 
-      vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
+p1 <- plot (res$nw[[1]], title = res$id[[1]], label.cex = node_font_size, vsize = circle_size,
+            curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[1]]$wc), title.cex = title_font_size)
+plot (res$nw[[2]], title = res$id[[2]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size, 
+      curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[2]]$wc), title.cex = title_font_size)
+plot (res$nw[[3]], title = res$id[[3]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[3]]$wc), title.cex = title_font_size)
+plot (res$nw[[4]], title = res$id[[4]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[4]]$wc), title.cex = title_font_size)
+plot (res$nw[[5]], title = res$id[[5]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[5]]$wc), title.cex = title_font_size)
+plot (res$nw[[6]], title = res$id[[6]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[6]]$wc), title.cex = title_font_size)
+```
+
+```{r, eval = FALSE}
+# Export
+pdf(width = 25, height = 15, file = "manuscript/fig1.pdf")
+par(mfrow= c(3,2))
+# Visualize network
+par(mfrow= c(3,2))
+# Visualize network
+p1 <- plot (res$nw[[1]], title = res$id[[1]], label.cex = node_font_size, vsize = circle_size,
+            curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[1]]$wc), title.cex = title_font_size, legend.cex = legend_font_size)
+plot (res$nw[[2]], title = res$id[[2]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size, 
+      curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[2]]$wc), title.cex = title_font_size, legend.cex = legend_font_size)
+plot (res$nw[[3]], title = res$id[[3]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[3]]$wc), title.cex = title_font_size, legend.cex = legend_font_size)
+plot (res$nw[[4]], title = res$id[[4]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[4]]$wc), title.cex = title_font_size, legend.cex = legend_font_size)
+plot (res$nw[[5]], title = res$id[[5]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[5]]$wc), title.cex = title_font_size, legend.cex = legend_font_size)
+plot (res$nw[[6]], title = res$id[[6]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[6]]$wc), title.cex = title_font_size, legend.cex = legend_font_size)
+dev.off()
+
+```
+
+
+
+```{r, include = FALSE, eval = FALSE}
+# Easy reporting in manuscript
+
+m = 1
+
+for (n in 1:6) {
+  
+x <- summary (res$edgewts[[n]]) %>%
+  ungroup () %>%
+  filter (type == "edge" & sample != 0) %>%
+  dplyr::select (id, node1, node2, sample, q2.5, q97.5) %>%
+  mutate (samp_abs = abs (sample)) %>%
+  slice_max (samp_abs, n = 2) %>%
+  mutate_if (is.numeric, round, 2) 
+
+
+
+cat ("The edge with the greatest weight magnitude was between", x[[m,"node1"]],
+     "and",   x[[m,"node2"]],
+     "with a value of", x[[m,"sample"]],
+     "([95%CI (", x[[m, "q2.5"]], "to", x[[m,"q97.5"]], "])", "\n")
+
+}
 ```
 
 ### Plot edge weights stability
@@ -204,6 +271,22 @@ cowplot::plot_grid(plotlist = w_fig, labels = res$id, vjust = 1, hjust = -1, nco
 
 ```
 
+```{r, eval = FALSE, include = FALSE}
+
+# export
+w_fig <- map (res$edgewts, plot, order = "sample", CIstyle = "quantiles")
+
+w_fig <- map (w_fig, ~.x + 
+                  theme(text = element_text(size = 12)), 
+              include = "all", print = FALSE, scale = "relative")
+
+pdf(width = 10, height = 25, file = "manuscript/fig2.pdf")
+cowplot::plot_grid(plotlist = w_fig, 
+                  labels = res$id, 
+                  vjust = 1, hjust = -1, ncol = 2)
+dev.off()
+
+```
 
 ### Plot centrality
 
@@ -232,6 +315,46 @@ cowplot::plot_grid(plotlist = c_fig,  labels = res$id, vjust = 1, hjust = 0, nco
 #dev.off()
 ```
 
+```{r eval = FALSE, include = FALSE}
+
+# export
+c_fig <- map (res$nw, centralityPlot, include = c("Closeness", "Strength", "Betweenness"), 
+              print = FALSE, scale = "relative") %>%
+  map (~.x + 
+                  scale_x_continuous(breaks= c(0, 0.5, 1), lim = c(0, 1)) + 
+                  theme(text = element_text(size = 20), 
+                        axis.text.x = element_text(angle = 45, hjust = 1)), 
+              include = "all", print = FALSE, scale = "relative")
+
+pdf(width = 20, height = 15, file = "manuscript/fig3.pdf")
+cowplot::plot_grid(plotlist = c_fig, 
+                  labels = res$id,
+                    vjust = 1, hjust = 0, ncol = 2)
+dev.off()
+
+```
+
+```{r, eval = FALSE, include = FALSE}
+
+for (n in seq_along (res$id)) {
+  
+  c_val <- c_fig[[n]]$data %>%
+    group_by(node) %>%
+    mutate (ave = mean (value)) %>%
+    ungroup () %>%
+    slice_max (ave, n = 6) %>%
+    pull (node) %>%
+    unique () %>%
+    as.character()
+  
+  cat ("At", res$id[n], "across all three centrality measures, the two nodes with the greatest value was",     c_val[[1]], "and", c_val[[2]], "\n")
+
+}
+
+
+```
+
+
 ### Plot centrality stability
 
 ```{r message=FALSE, warning=FALSE, fig.height=15, fig.width=9}
@@ -248,6 +371,55 @@ s_fig <- map (s_fig, ~.x +
 #tiff(width = 15, height = 15, units = "in", res = 100, file = "output/odi_stability.tiff")
 cowplot::plot_grid(plotlist = s_fig, labels = res$id, vjust = 1, hjust = 0, ncol = 2, nrow = 3)
 #dev.off()
+```
+
+```{r eval = FALSE, include = FALSE}
+# expor
+s_fig <- map (res$centr_stb, plot, statistics = c("closeness", "strength", "betweenness"))
+
+s_fig <- map (s_fig, ~.x + 
+                ylab ("Ave Corr") + 
+                  theme(text = element_text(size = 20), 
+                        axis.text.x = element_text(angle = 90, hjust = 1)), 
+              include = "all", print = FALSE, scale = "relative")
+
+pdf(width = 20, height = 15, file = "manuscript/fig4.pdf")
+cowplot::plot_grid(plotlist = s_fig, 
+                  labels = res$id, 
+                    vjust = 1, hjust = 0, ncol = 2)
+dev.off()
+
+```
+
+## Get CS coefficient
+
+```{r, results = "asis", message=FALSE, warning=FALSE}
+cs_coef <- res %>%
+  select (id, cor_stb) %>%
+  unnest () %>%
+  ungroup() %>%
+  mutate (measure = rep (c("betweenness", "closeness", "strength"), 6)) %>%
+  mutate (CS = round (cor_stb, 2))
+cs_coef %>%
+  knitr::kable (caption = "Stability of centrality indices")
+
+```
+
+```{r eval = FALSE, include = FALSE}
+my_path <- paste0("manuscript/table", 
+                  "CScoef",
+                  ".docx")
+
+
+ft <- flextable(cs_coef) %>%
+  set_caption(caption = "Table 2. CS Coefficient") %>%
+  autofit()
+
+my_doc <- read_docx()  %>% 
+  body_add_flextable(ft) %>%
+  body_end_section_landscape()
+
+print (my_doc, target = my_path)
 ```
 
 ## Exploratory graphical analysis
@@ -284,24 +456,6 @@ for (n in seq_along (res$id)) {
                              plot.EGA = FALSE)
 }
 res$ega_boot <- ega_boot
-
-```
-
-## Report EGA
-
-```{r, fig.height=12, fig.width=9}
-node_font_size <- 1.5
-circle_size <- 12
-title_font_size <- 1.5
-legend_font_size <- 3
-
-par (mfrow = c(3,2))
-qgraph (res$ega[[1]]$network, groups = as.factor (res$ega[[1]]$wc), title = "6mo", layout = p1$layout, label.cex = node_font_size, vsize = circle_size, shape = "circle", title.cex = title_font_size)
-qgraph (res$ega[[2]]$network, groups = as.factor (res$ega[[2]]$wc), title = "12mo", layout = p1$layout, label.cex = node_font_size, vsize = circle_size, shape = "circle", title.cex = title_font_size)
-qgraph (res$ega[[3]]$network, groups = as.factor (res$ega[[3]]$wc),title = "6mo No", layout = p1$layout, label.cex = node_font_size, vsize = circle_size, shape = "circle", title.cex = title_font_size)
-qgraph (res$ega[[4]]$network, groups = as.factor (res$ega[[4]]$wc),title = "6m Yes", layout = p1$layout, label.cex = node_font_size, vsize = circle_size, shape = "circle", title.cex = title_font_size)
-qgraph (res$ega[[3]]$network, groups = as.factor (res$ega[[5]]$wc),title = "12mo No", layout = p1$layout, label.cex = node_font_size, vsize = circle_size, shape = "circle", title.cex = title_font_size)
-qgraph (res$ega[[4]]$network, groups = as.factor (res$ega[[6]]$wc),title = "12m Yes", layout = p1$layout, label.cex = node_font_size, vsize = circle_size, shape = "circle", title.cex = title_font_size)
 
 ```
 
@@ -350,6 +504,43 @@ names (boot_freq) <- res$id
 boot_freq <-  bind_rows(boot_freq, .id = "id") 
 
 boot_freq
+```
+
+## CFA 
+
+```{r}
+cfa_sum_list <- list()
+
+for (n in seq_along(res$id)) {
+  cfa_sum_list[[n]] <- lavaan::fitMeasures(res$cfa[[n]]$fit, fit.measures = "all")
+
+}
+
+cfa_sum <- cfa_sum_list %>%
+  bind_rows() %>%
+  mutate_if (is.numeric, round, 3) %>%
+  mutate (id = res$id) %>%
+  select (id, chisq.scaled, df, pvalue, cfi.scaled, rmsea.scaled )
+
+cfa_sum
+```
+
+```{r eval = FALSE, include = FALSE}
+
+# export
+my_path <- paste0("manuscript/table3", 
+                  "_cfa",
+                  ".docx")
+
+
+ft <- flextable(cfa_sum) %>%
+  set_caption(caption = "Table 3. CFA") %>%
+  autofit()
+
+my_doc <- read_docx()  %>% 
+  body_add_flextable(ft) 
+
+print (my_doc, target = my_path)
 ```
 
 ## Compare networks
