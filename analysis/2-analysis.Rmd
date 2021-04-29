@@ -53,6 +53,11 @@ res <- readRDS ("output/nw_res.RDS")
 
 sf <- paste0("q", c(1,2,3,5,6,7)) 
 node_col <- ifelse (names (res$data[[1]]) %in% sf, "lightblue", "white")
+
+
+emo <- c("q3",  "q6", "q12", "q7", "q9")
+conf <- c("q4",  "q5", "q8", "q1", "q11")
+risk <- c("q2", "q10")
 ```
 
 
@@ -232,7 +237,7 @@ dev.off()
 ```{r, include = FALSE, eval = FALSE}
 # Easy reporting in manuscript
 
-m = 1
+m = 2
 
 for (n in 1:6) {
   
@@ -425,6 +430,19 @@ print (my_doc, target = my_path)
 ## Exploratory graphical analysis
 
 ```{reval = FALSE}
+
+ega_theory <- function (ega_original, data) {
+  
+  theory <- ega_original
+  theory$dim.variables[,1] <- colnames (data)
+  
+  theory$dim.variables[theory$dim.variables$items %in% emo,2] <- rep (1, length (emo))
+  theory$dim.variables[theory$dim.variables$items %in% conf,2] <- rep (2, length (conf))
+  theory$dim.variables[theory$dim.variables$items %in% risk,2] <- rep (2, length (risk))
+  
+  return (theory)
+}
+
 res <- res %>%
   mutate (ega = map (dat_norm, 
                      EGA, 
@@ -441,7 +459,16 @@ res <- res %>%
                             data = dat_norm),
                       CFA,
                       estimator = "WLSMV",
-                      plot.CFA = FALSE)) 
+                      plot.CFA = FALSE)) %>%
+  mutate (ega_th = pmap (list (ega_original = ega, 
+                            data = data),
+                      ega_theory)) %>%
+  mutate (cfa_th = pmap (list (ega.obj = ega_th, 
+                            data = data),
+                      CFA,
+                      estimator = "WLSMV",
+                      plot.CFA = FALSE)
+  )
 
 # Bootstrap
 ega_boot <- vector("list", length (res$id))
@@ -461,7 +488,7 @@ res$ega_boot <- ega_boot
 
 ## Stability
 
-```{r, eval = FALSE}
+```{r}
 ega_boot_stb <- vector("list", length (res$id))
 
 for (n in seq_along (res$id)) {
@@ -470,6 +497,29 @@ for (n in seq_along (res$id)) {
 }
 
 res$ega_boot_stb <- ega_boot_stb
+
+dim_stb_list <- list()
+
+for (n in seq_along (res$id)) {
+  
+  dim_stb_list[[n]] <- res$ega_boot_stb[[n]][[2]][[1]]
+}
+
+dim_stb_list <- map (dim_stb_list, ~.x + 
+                  theme(text = element_text(size = 20)))
+
+#pdf(width = 20, height = 15, file = "manuscript/fig4.pdf")
+# cowplot::plot_grid(plotlist = dim_stb_list, 
+#                   labels = res$id, 
+#                     vjust = 1, hjust = 0, ncol = 2)
+#dev.off()
+```
+
+
+```{r, fig.height=9, fig.width=9}
+cowplot::plot_grid(plotlist = dim_stb_list, 
+                  labels = res$id, 
+                    vjust = 1, hjust = 0, ncol = 2)
 ```
 
 ### Summary table
@@ -513,14 +563,15 @@ cfa_sum_list <- list()
 
 for (n in seq_along(res$id)) {
   cfa_sum_list[[n]] <- lavaan::fitMeasures(res$cfa[[n]]$fit, fit.measures = "all")
-
+  cfa_sum_list[[n + length (res$id)]] <- lavaan::fitMeasures(res$cfa_th[[n]]$fit, fit.measures = "all")
 }
 
 cfa_sum <- cfa_sum_list %>%
   bind_rows() %>%
   mutate_if (is.numeric, round, 3) %>%
-  mutate (id = res$id) %>%
-  select (id, chisq.scaled, df, pvalue, cfi.scaled, rmsea.scaled )
+  mutate (theory = rep (c("data", "theory"), each = 6)) %>%
+  mutate (id = rep (res$id, 2)) %>%
+  select (id, theory, chisq.scaled, df, pvalue, cfi.scaled, rmsea.scaled )
 
 cfa_sum
 ```

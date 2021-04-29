@@ -28,8 +28,6 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -420,7 +418,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-04-27
+<strong>Last updated:</strong> 2021-04-29
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -511,16 +509,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcombernardliewACLRSILaTrobetree4f340d9adbc365b4fd9140c4939860d5c7a35e53targetblank4f340d9a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/bernard-liew/ACL-RSI-La-Trobe-/tree/4f340d9adbc365b4fd9140c4939860d5c7a35e53" target="_blank">4f340d9</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcombernardliewACLRSILaTrobetree929291b0af58f81eed4ea2f1700419866e3e76d9targetblank929291ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/bernard-liew/ACL-RSI-La-Trobe-/tree/929291b0af58f81eed4ea2f1700419866e3e76d9" target="_blank">929291b</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcombernardliewACLRSILaTrobetree4f340d9adbc365b4fd9140c4939860d5c7a35e53targetblank4f340d9a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcombernardliewACLRSILaTrobetree929291b0af58f81eed4ea2f1700419866e3e76d9targetblank929291ba" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/bernard-liew/ACL-RSI-La-Trobe-/tree/4f340d9adbc365b4fd9140c4939860d5c7a35e53" target="_blank">4f340d9</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/bernard-liew/ACL-RSI-La-Trobe-/tree/929291b0af58f81eed4ea2f1700419866e3e76d9" target="_blank">929291b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -572,6 +570,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/bernard-liew/ACL-RSI-La-Trobe-/blob/929291b0af58f81eed4ea2f1700419866e3e76d9/analysis/2-analysis.Rmd" target="_blank">929291b</a>
+</td>
+<td>
+Bernard
+</td>
+<td>
+2021-04-27
+</td>
+<td>
+add reporting
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/bernard-liew/ACL-RSI-La-Trobe-/blob/466e40d35459c64e56faaac641def9216d7574d4/analysis/2-analysis.Rmd" target="_blank">466e40d</a>
+</td>
+<td>
+Bernard
+</td>
+<td>
+2021-04-27
+</td>
+<td>
+added EGA analysis
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/bernard-liew/ACL-RSI-La-Trobe-/466e40d35459c64e56faaac641def9216d7574d4/docs/2-analysis.html" target="_blank">466e40d</a>
+</td>
+<td>
+Bernard
+</td>
+<td>
+2021-04-27
+</td>
+<td>
+added EGA analysis
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -750,7 +799,9 @@ library (EGAnet)
 library (furrr)
 
 # Styling
-library (kableExtra)</code></pre>
+library (kableExtra)
+library (officer)
+library (flextable)</code></pre>
 </div>
 <div id="import" class="section level1">
 <h1>Import</h1>
@@ -761,6 +812,40 @@ library (kableExtra)</code></pre>
   mutate (rts_6binary = ifelse (rts_6 %in% c(&quot;na_no_prior&quot;, &quot;no&quot;), &quot;no&quot;, 
                                 ifelse (rts_6 %in% c(&quot;NA&quot;), &quot;na&quot;, &quot;yes&quot;)),
           rts_12binary = ifelse (rts_12 %in% c(&quot;no&quot;, &quot;yes_lower&quot;), &quot;no&quot;, &quot;yes&quot;))</code></pre>
+</div>
+<div id="descriptive-statistics" class="section level1">
+<h1>Descriptive statistics</h1>
+<pre class="r"><code>df_plot &lt;- res %&gt;%
+  select (id,data) %&gt;%
+  unnest (data) %&gt;%
+  pivot_longer(cols = starts_with(&quot;q&quot;),
+               names_to = &quot;Items&quot;,
+               values_to = &quot;val&quot;) %&gt;%
+  mutate (Items = factor (Items, levels = names (res$data[[1]])))
+
+df_plot &lt;- df_plot %&gt;%
+  group_by(id, Items) %&gt;%
+  summarise(Mean = mean (val, na.rm = TRUE),
+            Sd = sd (val, na.rm = TRUE)) %&gt;%
+  mutate (id = factor (id, levels = c(&quot;6mo&quot;,&quot;12mo&quot;,&quot;6moNo&quot;,&quot;6moYes&quot;,&quot;12moNo&quot;, &quot;12moYes&quot;)))</code></pre>
+<pre><code>`summarise()` regrouping output by &#39;id&#39; (override with `.groups` argument)</code></pre>
+<pre class="r"><code> f &lt;- ggplot (df_plot) +
+  geom_point(aes (x = Items, y = Mean),  
+             stat = &quot;identity&quot;) +
+  geom_errorbar(aes (x = Items, 
+                     ymin = Mean - Sd, 
+                     ymax = Mean + Sd), 
+                width = 0) +
+  facet_wrap(~ id, scales = &quot;fixed&quot;, ncol = 2) +
+  labs (x = &quot;Items&quot;,
+        y = &quot;Score&quot;) +
+  theme_cowplot() 
+
+pdf(width = 15, height = 8, file = &quot;manuscript/sm_fig1.pdf&quot;)
+f
+dev.off()</code></pre>
+<pre><code>png 
+  2 </code></pre>
 </div>
 <div id="network-analysis" class="section level1">
 <h1>Network analysis</h1>
@@ -844,21 +929,45 @@ saveRDS(res,
 <h3>Plot network</h3>
 <p><strong>Blue edges</strong> - positive correlation. <strong>Red edges </strong>- negative correlation.</p>
 <p>The thickness of the edges indicate the magnitude of correlation.</p>
-<pre class="r"><code>par(mfrow= c(3,2))
+<pre class="r"><code>node_font_size &lt;- 1.5
+circle_size &lt;- 12
+title_font_size &lt;- 3
+legend_font_size &lt;- 2
+
+par(mfrow= c(3,2))
 # Visualize network
-p1 &lt;- plot (res$nw[[1]], title = res$id[[1]], label.cex = 1.5, 
-            vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
-plot (res$nw[[2]], title = res$id[[2]], layout = p1$layout, label.cex = 1.5,
-      vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
-plot (res$nw[[3]], title = res$id[[3]], layout = p1$layout, label.cex = 1.5, 
-      vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
-plot (res$nw[[4]], title = res$id[[4]], layout = p1$layout, label.cex = 1.5, 
-      vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
-plot (res$nw[[5]], title = res$id[[5]], layout = p1$layout, label.cex = 1.5, 
-      vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)
-plot (res$nw[[6]], title = res$id[[6]], layout = p1$layout, label.cex = 1.5, 
-      vsize = 10, curve = 0.4, curveAll = TRUE, color = node_col)</code></pre>
+p1 &lt;- plot (res$nw[[1]], title = res$id[[1]], label.cex = node_font_size, vsize = circle_size,
+            curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[1]]$wc), title.cex = title_font_size)
+plot (res$nw[[2]], title = res$id[[2]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size, 
+      curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[2]]$wc), title.cex = title_font_size)
+plot (res$nw[[3]], title = res$id[[3]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[3]]$wc), title.cex = title_font_size)
+plot (res$nw[[4]], title = res$id[[4]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[4]]$wc), title.cex = title_font_size)
+plot (res$nw[[5]], title = res$id[[5]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[5]]$wc), title.cex = title_font_size)
+plot (res$nw[[6]], title = res$id[[6]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[6]]$wc), title.cex = title_font_size)</code></pre>
 <p><img src="figure/2-analysis.Rmd/unnamed-chunk-7-1.png" width="864" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Export
+pdf(width = 25, height = 15, file = &quot;manuscript/fig1.pdf&quot;)
+par(mfrow= c(3,2))
+# Visualize network
+par(mfrow= c(3,2))
+# Visualize network
+p1 &lt;- plot (res$nw[[1]], title = res$id[[1]], label.cex = node_font_size, vsize = circle_size,
+            curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[1]]$wc), title.cex = title_font_size, legend.cex = legend_font_size)
+plot (res$nw[[2]], title = res$id[[2]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size, 
+      curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[2]]$wc), title.cex = title_font_size, legend.cex = legend_font_size)
+plot (res$nw[[3]], title = res$id[[3]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[3]]$wc), title.cex = title_font_size, legend.cex = legend_font_size)
+plot (res$nw[[4]], title = res$id[[4]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[4]]$wc), title.cex = title_font_size, legend.cex = legend_font_size)
+plot (res$nw[[5]], title = res$id[[5]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[5]]$wc), title.cex = title_font_size, legend.cex = legend_font_size)
+plot (res$nw[[6]], title = res$id[[6]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (res$ega[[6]]$wc), title.cex = title_font_size, legend.cex = legend_font_size)
+dev.off()</code></pre>
 </div>
 <div id="plot-edge-weights-stability" class="section level3">
 <h3>Plot edge weights stability</h3>
@@ -870,7 +979,7 @@ w_fig &lt;- map (w_fig, ~.x +
               include = &quot;all&quot;, print = FALSE, scale = &quot;relative&quot;)
 
 cowplot::plot_grid(plotlist = w_fig, labels = res$id, vjust = 1, hjust = -1, ncol = 2, nrow = 3)</code></pre>
-<p><img src="figure/2-analysis.Rmd/unnamed-chunk-8-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p><img src="figure/2-analysis.Rmd/unnamed-chunk-10-1.png" width="864" style="display: block; margin: auto;" /></p>
 </div>
 <div id="plot-centrality" class="section level3">
 <h3>Plot centrality</h3>
@@ -889,7 +998,7 @@ cowplot::plot_grid(plotlist = w_fig, labels = res$id, vjust = 1, hjust = -1, nco
 
 #tiff(width = 15, height = 15, units = &quot;in&quot;, res = 100, file = &quot;output/odi_strength.tiff&quot;)
 cowplot::plot_grid(plotlist = c_fig,  labels = res$id, vjust = 1, hjust = 0, ncol = 2, nrow = 3)</code></pre>
-<p><img src="figure/2-analysis.Rmd/unnamed-chunk-9-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p><img src="figure/2-analysis.Rmd/unnamed-chunk-12-1.png" width="864" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#dev.off()</code></pre>
 </div>
 <div id="plot-centrality-stability" class="section level3">
@@ -906,13 +1015,312 @@ s_fig &lt;- map (s_fig, ~.x +
 
 #tiff(width = 15, height = 15, units = &quot;in&quot;, res = 100, file = &quot;output/odi_stability.tiff&quot;)
 cowplot::plot_grid(plotlist = s_fig, labels = res$id, vjust = 1, hjust = 0, ncol = 2, nrow = 3)</code></pre>
-<p><img src="figure/2-analysis.Rmd/unnamed-chunk-10-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p><img src="figure/2-analysis.Rmd/unnamed-chunk-15-1.png" width="864" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#dev.off()</code></pre>
 </div>
 </div>
+<div id="get-cs-coefficient" class="section level2">
+<h2>Get CS coefficient</h2>
+<pre class="r"><code>cs_coef &lt;- res %&gt;%
+  select (id, cor_stb) %&gt;%
+  unnest () %&gt;%
+  ungroup() %&gt;%
+  mutate (measure = rep (c(&quot;betweenness&quot;, &quot;closeness&quot;, &quot;strength&quot;), 6)) %&gt;%
+  mutate (CS = round (cor_stb, 2))
+cs_coef %&gt;%
+  knitr::kable (caption = &quot;Stability of centrality indices&quot;)</code></pre>
+<table>
+<caption>
+Stability of centrality indices
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:right;">
+cor_stb
+</th>
+<th style="text-align:left;">
+measure
+</th>
+<th style="text-align:right;">
+CS
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+6mo
+</td>
+<td style="text-align:right;">
+0.3605442
+</td>
+<td style="text-align:left;">
+betweenness
+</td>
+<td style="text-align:right;">
+0.36
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+6mo
+</td>
+<td style="text-align:right;">
+0.5941043
+</td>
+<td style="text-align:left;">
+closeness
+</td>
+<td style="text-align:right;">
+0.59
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+6mo
+</td>
+<td style="text-align:right;">
+0.7505669
+</td>
+<td style="text-align:left;">
+strength
+</td>
+<td style="text-align:right;">
+0.75
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12mo
+</td>
+<td style="text-align:right;">
+0.5170068
+</td>
+<td style="text-align:left;">
+betweenness
+</td>
+<td style="text-align:right;">
+0.52
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12mo
+</td>
+<td style="text-align:right;">
+0.5170068
+</td>
+<td style="text-align:left;">
+closeness
+</td>
+<td style="text-align:right;">
+0.52
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12mo
+</td>
+<td style="text-align:right;">
+0.7505669
+</td>
+<td style="text-align:left;">
+strength
+</td>
+<td style="text-align:right;">
+0.75
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+6moNo
+</td>
+<td style="text-align:right;">
+0.3597360
+</td>
+<td style="text-align:left;">
+betweenness
+</td>
+<td style="text-align:right;">
+0.36
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+6moNo
+</td>
+<td style="text-align:right;">
+0.3597360
+</td>
+<td style="text-align:left;">
+closeness
+</td>
+<td style="text-align:right;">
+0.36
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+6moNo
+</td>
+<td style="text-align:right;">
+0.7491749
+</td>
+<td style="text-align:left;">
+strength
+</td>
+<td style="text-align:right;">
+0.75
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+6moYes
+</td>
+<td style="text-align:right;">
+0.1313869
+</td>
+<td style="text-align:left;">
+betweenness
+</td>
+<td style="text-align:right;">
+0.13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+6moYes
+</td>
+<td style="text-align:right;">
+0.3576642
+</td>
+<td style="text-align:left;">
+closeness
+</td>
+<td style="text-align:right;">
+0.36
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+6moYes
+</td>
+<td style="text-align:right;">
+0.5182482
+</td>
+<td style="text-align:left;">
+strength
+</td>
+<td style="text-align:right;">
+0.52
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12moNo
+</td>
+<td style="text-align:right;">
+0.2850467
+</td>
+<td style="text-align:left;">
+betweenness
+</td>
+<td style="text-align:right;">
+0.29
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12moNo
+</td>
+<td style="text-align:right;">
+0.3598131
+</td>
+<td style="text-align:left;">
+closeness
+</td>
+<td style="text-align:right;">
+0.36
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12moNo
+</td>
+<td style="text-align:right;">
+0.6728972
+</td>
+<td style="text-align:left;">
+strength
+</td>
+<td style="text-align:right;">
+0.67
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12moYes
+</td>
+<td style="text-align:right;">
+0.3612335
+</td>
+<td style="text-align:left;">
+betweenness
+</td>
+<td style="text-align:right;">
+0.36
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12moYes
+</td>
+<td style="text-align:right;">
+0.3612335
+</td>
+<td style="text-align:left;">
+closeness
+</td>
+<td style="text-align:right;">
+0.36
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12moYes
+</td>
+<td style="text-align:right;">
+0.6740088
+</td>
+<td style="text-align:left;">
+strength
+</td>
+<td style="text-align:right;">
+0.67
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <div id="exploratory-graphical-analysis" class="section level2">
 <h2>Exploratory graphical analysis</h2>
-<pre class="reval"><code>res &lt;- res %&gt;%
+<pre class="reval"><code>
+ega_theory &lt;- function (ega_original, data) {
+  
+  theory &lt;- ega_original
+  theory$dim.variables[,1] &lt;- colnames (data)
+  
+  theory$dim.variables[theory$dim.variables$items %in% emo,2] &lt;- rep (1, length (emo))
+  theory$dim.variables[theory$dim.variables$items %in% conf,2] &lt;- rep (2, length (conf))
+  theory$dim.variables[theory$dim.variables$items %in% risk,2] &lt;- rep (2, length (risk))
+  
+  return (theory)
+}
+
+res &lt;- res %&gt;%
   mutate (ega = map (dat_norm, 
                      EGA, 
                      cor = &quot;pearson&quot;,
@@ -928,7 +1336,16 @@ cowplot::plot_grid(plotlist = s_fig, labels = res$id, vjust = 1, hjust = 0, ncol
                             data = dat_norm),
                       CFA,
                       estimator = &quot;WLSMV&quot;,
-                      plot.CFA = FALSE)) 
+                      plot.CFA = FALSE)) %&gt;%
+  mutate (ega_th = pmap (list (ega_original = ega, 
+                            data = data),
+                      ega_theory)) %&gt;%
+  mutate (cfa_th = pmap (list (ega.obj = ega_th, 
+                            data = data),
+                      CFA,
+                      estimator = &quot;WLSMV&quot;,
+                      plot.CFA = FALSE)
+  )
 
 # Bootstrap
 ega_boot &lt;- vector(&quot;list&quot;, length (res$id))
@@ -945,22 +1362,6 @@ for (n in seq_along (res$id)) {
 res$ega_boot &lt;- ega_boot
 </code></pre>
 </div>
-<div id="report-ega" class="section level2">
-<h2>Report EGA</h2>
-<pre class="r"><code>node_font_size &lt;- 1.5
-circle_size &lt;- 12
-title_font_size &lt;- 1.5
-legend_font_size &lt;- 3
-
-par (mfrow = c(3,2))
-qgraph (res$ega[[1]]$network, groups = as.factor (res$ega[[1]]$wc), title = &quot;6mo&quot;, layout = p1$layout, label.cex = node_font_size, vsize = circle_size, shape = &quot;circle&quot;, title.cex = title_font_size)
-qgraph (res$ega[[2]]$network, groups = as.factor (res$ega[[2]]$wc), title = &quot;12mo&quot;, layout = p1$layout, label.cex = node_font_size, vsize = circle_size, shape = &quot;circle&quot;, title.cex = title_font_size)
-qgraph (res$ega[[3]]$network, groups = as.factor (res$ega[[3]]$wc),title = &quot;6mo No&quot;, layout = p1$layout, label.cex = node_font_size, vsize = circle_size, shape = &quot;circle&quot;, title.cex = title_font_size)
-qgraph (res$ega[[4]]$network, groups = as.factor (res$ega[[4]]$wc),title = &quot;6m Yes&quot;, layout = p1$layout, label.cex = node_font_size, vsize = circle_size, shape = &quot;circle&quot;, title.cex = title_font_size)
-qgraph (res$ega[[3]]$network, groups = as.factor (res$ega[[5]]$wc),title = &quot;12mo No&quot;, layout = p1$layout, label.cex = node_font_size, vsize = circle_size, shape = &quot;circle&quot;, title.cex = title_font_size)
-qgraph (res$ega[[4]]$network, groups = as.factor (res$ega[[6]]$wc),title = &quot;12m Yes&quot;, layout = p1$layout, label.cex = node_font_size, vsize = circle_size, shape = &quot;circle&quot;, title.cex = title_font_size)</code></pre>
-<p><img src="figure/2-analysis.Rmd/unnamed-chunk-11-1.png" width="864" style="display: block; margin: auto;" /></p>
-</div>
 <div id="stability" class="section level2">
 <h2>Stability</h2>
 <pre class="r"><code>ega_boot_stb &lt;- vector(&quot;list&quot;, length (res$id))
@@ -968,9 +1369,34 @@ qgraph (res$ega[[4]]$network, groups = as.factor (res$ega[[6]]$wc),title = &quot
 for (n in seq_along (res$id)) {
   
   ega_boot_stb[[n]] &lt;- dimStability (res$ega_boot[[n]], orig.wc = res$ega[[n]]$wc)
+}</code></pre>
+<pre><code>Computing results...done
+Computing results...done
+Computing results...done
+Computing results...done
+Computing results...done
+Computing results...done</code></pre>
+<pre class="r"><code>res$ega_boot_stb &lt;- ega_boot_stb
+
+dim_stb_list &lt;- list()
+
+for (n in seq_along (res$id)) {
+  
+  dim_stb_list[[n]] &lt;- res$ega_boot_stb[[n]][[2]][[1]]
 }
 
-res$ega_boot_stb &lt;- ega_boot_stb</code></pre>
+dim_stb_list &lt;- map (dim_stb_list, ~.x + 
+                  theme(text = element_text(size = 20)))
+
+#pdf(width = 20, height = 15, file = &quot;manuscript/fig4.pdf&quot;)
+# cowplot::plot_grid(plotlist = dim_stb_list, 
+#                   labels = res$id, 
+#                     vjust = 1, hjust = 0, ncol = 2)
+#dev.off()</code></pre>
+<pre class="r"><code>cowplot::plot_grid(plotlist = dim_stb_list, 
+                  labels = res$id, 
+                    vjust = 1, hjust = 0, ncol = 2)</code></pre>
+<p><img src="figure/2-analysis.Rmd/unnamed-chunk-20-1.png" width="864" style="display: block; margin: auto;" /></p>
 <div id="summary-table" class="section level3">
 <h3>Summary table</h3>
 <pre class="r"><code>sum_df &lt;- list()
@@ -1035,6 +1461,39 @@ boot_freq</code></pre>
 19 12moYes            3     0.269
 20 12moYes            4     0.027</code></pre>
 </div>
+</div>
+<div id="cfa" class="section level2">
+<h2>CFA</h2>
+<pre class="r"><code>cfa_sum_list &lt;- list()
+
+for (n in seq_along(res$id)) {
+  cfa_sum_list[[n]] &lt;- lavaan::fitMeasures(res$cfa[[n]]$fit, fit.measures = &quot;all&quot;)
+  cfa_sum_list[[n + length (res$id)]] &lt;- lavaan::fitMeasures(res$cfa_th[[n]]$fit, fit.measures = &quot;all&quot;)
+}
+
+cfa_sum &lt;- cfa_sum_list %&gt;%
+  bind_rows() %&gt;%
+  mutate_if (is.numeric, round, 3) %&gt;%
+  mutate (theory = rep (c(&quot;data&quot;, &quot;theory&quot;), each = 6)) %&gt;%
+  mutate (id = rep (res$id, 2)) %&gt;%
+  select (id, theory, chisq.scaled, df, pvalue, cfi.scaled, rmsea.scaled )
+
+cfa_sum</code></pre>
+<pre><code># A tibble: 12 x 7
+   id      theory chisq.scaled df         pvalue     cfi.scaled rmsea.scaled
+   &lt;chr&gt;   &lt;chr&gt;  &lt;lvn.vctr&gt;   &lt;lvn.vctr&gt; &lt;lvn.vctr&gt; &lt;lvn.vctr&gt; &lt;lvn.vctr&gt;  
+ 1 6mo     data   158.822      53         0.893      0.941      0.067       
+ 2 12mo    data   168.908      53         0.998      0.952      0.071       
+ 3 6moNo   data   139.896      53         0.732      0.920      0.074       
+ 4 6moYes  data    59.807      51         1.000      0.987      0.036       
+ 5 12moNo  data   105.404      53         0.999      0.943      0.068       
+ 6 12moYes data    86.901      53         1.000      0.975      0.053       
+ 7 6mo     theory 270.497      53         0.018      0.900      0.097       
+ 8 12mo    theory 296.456      53         0.168      0.904      0.102       
+ 9 6moNo   theory 203.208      53         0.051      0.876      0.097       
+10 6moYes  theory 106.579      53         0.999      0.928      0.086       
+11 12moNo  theory 148.801      53         0.782      0.915      0.092       
+12 12moYes theory 146.354      53         1.000      0.884      0.088       </code></pre>
 </div>
 <div id="compare-networks" class="section level2">
 <h2>Compare networks</h2>
@@ -1150,70 +1609,72 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] kableExtra_1.3.1            furrr_0.2.1                
- [3] future_1.21.0               EGAnet_0.9.8               
- [5] NetworkComparisonTest_2.2.1 qgraph_1.6.5               
- [7] bootnet_1.4.6               huge_1.3.4.1               
- [9] cowplot_1.1.1               arsenal_3.5.0              
-[11] forcats_0.5.0               stringr_1.4.0              
-[13] dplyr_1.0.2                 purrr_0.3.4                
-[15] readr_1.4.0                 tidyr_1.1.2                
-[17] tibble_3.0.4                ggplot2_3.3.3              
-[19] tidyverse_1.3.0            
+ [1] flextable_0.6.1             officer_0.3.16             
+ [3] kableExtra_1.3.1            furrr_0.2.1                
+ [5] future_1.21.0               EGAnet_0.9.8               
+ [7] NetworkComparisonTest_2.2.1 qgraph_1.6.5               
+ [9] bootnet_1.4.6               huge_1.3.4.1               
+[11] cowplot_1.1.1               arsenal_3.5.0              
+[13] forcats_0.5.0               stringr_1.4.0              
+[15] dplyr_1.0.2                 purrr_0.3.4                
+[17] readr_1.4.0                 tidyr_1.1.2                
+[19] tibble_3.0.4                ggplot2_3.3.3              
+[21] tidyverse_1.3.0            
 
 loaded via a namespace (and not attached):
-  [1] R.utils_2.10.1       tidyselect_1.1.0     htmlwidgets_1.5.3   
-  [4] grid_4.0.2           munsell_0.5.0        codetools_0.2-18    
-  [7] withr_2.3.0          colorspace_2.0-0     NetworkToolbox_1.4.1
- [10] highr_0.8            knitr_1.30           rstudioapi_0.13     
- [13] stats4_4.0.2         ggsignif_0.6.0       listenv_0.8.0       
- [16] labeling_0.4.2       git2r_0.27.1         mnormt_2.0.2        
- [19] farver_2.0.3         rprojroot_2.0.2      parallelly_1.24.0   
- [22] vctrs_0.3.6          generics_0.1.0       xfun_0.20           
- [25] R6_2.5.0             doParallel_1.0.16    smacof_2.1-1        
- [28] reshape_0.8.8        assertthat_0.2.1     promises_1.1.1      
- [31] scales_1.1.1         nnet_7.3-14          gtable_0.3.0        
- [34] globals_0.14.0       weights_1.0.1        workflowr_1.6.2     
- [37] rlang_0.4.10         splines_4.0.2        rstatix_0.6.0       
- [40] wordcloud_2.6        broom_0.7.4.9000     checkmate_2.0.0     
- [43] yaml_2.2.1           reshape2_1.4.4       abind_1.4-5         
- [46] modelr_0.1.8         d3Network_0.5.2.1    backports_1.2.1     
- [49] httpuv_1.5.4         Hmisc_4.4-2          tools_4.0.2         
- [52] psych_2.0.12         lavaan_0.6-7         ellipsis_0.3.1      
- [55] RColorBrewer_1.1-2   polynom_1.4-0        Rcpp_1.0.6          
- [58] plyr_1.8.6           base64enc_0.1-3      ggpubr_0.4.0        
- [61] rpart_4.1-15         pbapply_1.4-3        haven_2.3.1         
- [64] cluster_2.1.0        fs_1.5.0             survey_4.0          
- [67] magrittr_2.0.1       data.table_1.14.0    openxlsx_4.2.3      
- [70] reprex_0.3.0         tmvnsim_1.0-2        mvtnorm_1.1-1       
- [73] matrixcalc_1.0-3     whisker_0.4          hms_0.5.3           
- [76] evaluate_0.14        rio_0.5.16           jpeg_0.1-8.1        
- [79] readxl_1.3.1         gridExtra_2.3        shape_1.4.5         
- [82] compiler_4.0.2       ellipse_0.4.2        mice_3.12.0         
- [85] GGMncv_2.0.0         crayon_1.3.4         R.oo_1.24.0         
- [88] htmltools_0.5.0      corpcor_1.6.9        later_1.1.0.1       
- [91] Formula_1.2-4        snow_0.4-3           lubridate_1.7.9.2   
- [94] DBI_1.1.0            relaimpo_2.2-3       mgm_1.2-10          
- [97] dbplyr_2.0.0         MASS_7.3-53          boot_1.3-25         
-[100] IsingSampler_0.2.1   Matrix_1.2-18        IsingFit_0.3.1      
-[103] car_3.0-10           cli_2.2.0            heplots_1.3-7       
-[106] mitools_2.4          R.methodsS3_1.8.1    gdata_2.18.0        
-[109] parallel_4.0.2       igraph_1.2.6         BDgraph_2.63        
-[112] pkgconfig_2.0.3      numDeriv_2016.8-1.1  foreign_0.8-81      
-[115] xml2_1.3.2           foreach_1.5.1        pbivnorm_0.6.0      
-[118] webshot_0.5.2        rvest_0.3.6          digest_0.6.27       
-[121] rmarkdown_2.6        cellranger_1.1.0     htmlTable_2.1.0     
-[124] glassoFast_1.0       curl_4.3             gtools_3.8.2        
-[127] rjson_0.2.20         lifecycle_0.2.0      nlme_3.1-151        
-[130] glasso_1.11          jsonlite_1.7.2       network_1.16.1      
-[133] carData_3.0-4        viridisLite_0.3.0    fansi_0.4.1         
-[136] pillar_1.4.7         GGally_2.1.0         lattice_0.20-41     
-[139] httr_1.4.2           plotrix_3.7-8        survival_3.2-7      
-[142] glue_1.4.2           networktools_1.2.3   zip_2.1.1           
-[145] fdrtool_1.2.16       png_0.1-7            iterators_1.0.13    
-[148] candisc_0.8-3        glmnet_4.0-2         class_7.3-17        
-[151] stringi_1.5.3        nnls_1.4             latticeExtra_0.6-29 
-[154] eigenmodel_1.11      e1071_1.7-4         </code></pre>
+  [1] utf8_1.1.4           R.utils_2.10.1       tidyselect_1.1.0    
+  [4] htmlwidgets_1.5.3    grid_4.0.2           munsell_0.5.0       
+  [7] codetools_0.2-18     withr_2.3.0          colorspace_2.0-0    
+ [10] NetworkToolbox_1.4.1 highr_0.8            uuid_0.1-4          
+ [13] knitr_1.30           rstudioapi_0.13      stats4_4.0.2        
+ [16] ggsignif_0.6.0       listenv_0.8.0        labeling_0.4.2      
+ [19] git2r_0.27.1         mnormt_2.0.2         farver_2.0.3        
+ [22] rprojroot_2.0.2      parallelly_1.24.0    vctrs_0.3.6         
+ [25] generics_0.1.0       xfun_0.20            R6_2.5.0            
+ [28] doParallel_1.0.16    smacof_2.1-1         reshape_0.8.8       
+ [31] assertthat_0.2.1     promises_1.1.1       scales_1.1.1        
+ [34] nnet_7.3-14          gtable_0.3.0         globals_0.14.0      
+ [37] weights_1.0.1        workflowr_1.6.2      rlang_0.4.10        
+ [40] systemfonts_0.3.2    splines_4.0.2        rstatix_0.6.0       
+ [43] wordcloud_2.6        broom_0.7.4.9000     checkmate_2.0.0     
+ [46] yaml_2.2.1           reshape2_1.4.4       abind_1.4-5         
+ [49] modelr_0.1.8         d3Network_0.5.2.1    backports_1.2.1     
+ [52] httpuv_1.5.4         Hmisc_4.4-2          tools_4.0.2         
+ [55] psych_2.0.12         lavaan_0.6-7         ellipsis_0.3.1      
+ [58] RColorBrewer_1.1-2   polynom_1.4-0        Rcpp_1.0.6          
+ [61] plyr_1.8.6           base64enc_0.1-3      ggpubr_0.4.0        
+ [64] rpart_4.1-15         pbapply_1.4-3        haven_2.3.1         
+ [67] cluster_2.1.0        fs_1.5.0             survey_4.0          
+ [70] magrittr_2.0.1       data.table_1.14.0    openxlsx_4.2.3      
+ [73] reprex_0.3.0         tmvnsim_1.0-2        mvtnorm_1.1-1       
+ [76] matrixcalc_1.0-3     whisker_0.4          hms_0.5.3           
+ [79] evaluate_0.14        rio_0.5.16           jpeg_0.1-8.1        
+ [82] readxl_1.3.1         gridExtra_2.3        shape_1.4.5         
+ [85] compiler_4.0.2       ellipse_0.4.2        mice_3.12.0         
+ [88] GGMncv_2.0.0         crayon_1.3.4         R.oo_1.24.0         
+ [91] htmltools_0.5.0      corpcor_1.6.9        later_1.1.0.1       
+ [94] Formula_1.2-4        snow_0.4-3           lubridate_1.7.9.2   
+ [97] DBI_1.1.0            relaimpo_2.2-3       mgm_1.2-10          
+[100] dbplyr_2.0.0         MASS_7.3-53          boot_1.3-25         
+[103] IsingSampler_0.2.1   Matrix_1.2-18        IsingFit_0.3.1      
+[106] car_3.0-10           cli_2.2.0            heplots_1.3-7       
+[109] mitools_2.4          R.methodsS3_1.8.1    gdata_2.18.0        
+[112] parallel_4.0.2       igraph_1.2.6         BDgraph_2.63        
+[115] pkgconfig_2.0.3      numDeriv_2016.8-1.1  foreign_0.8-81      
+[118] xml2_1.3.2           foreach_1.5.1        pbivnorm_0.6.0      
+[121] webshot_0.5.2        rvest_0.3.6          digest_0.6.27       
+[124] rmarkdown_2.6        cellranger_1.1.0     htmlTable_2.1.0     
+[127] glassoFast_1.0       gdtools_0.2.3        curl_4.3            
+[130] gtools_3.8.2         rjson_0.2.20         lifecycle_0.2.0     
+[133] nlme_3.1-151         glasso_1.11          jsonlite_1.7.2      
+[136] network_1.16.1       carData_3.0-4        viridisLite_0.3.0   
+[139] fansi_0.4.1          pillar_1.4.7         GGally_2.1.0        
+[142] lattice_0.20-41      httr_1.4.2           plotrix_3.7-8       
+[145] survival_3.2-7       glue_1.4.2           networktools_1.2.3  
+[148] zip_2.1.1            fdrtool_1.2.16       png_0.1-7           
+[151] iterators_1.0.13     candisc_0.8-3        glmnet_4.0-2        
+[154] class_7.3-17         stringi_1.5.3        nnls_1.4            
+[157] latticeExtra_0.6-29  eigenmodel_1.11      e1071_1.7-4         </code></pre>
 </div>
 </div>
 </div>
