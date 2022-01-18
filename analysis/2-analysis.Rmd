@@ -58,6 +58,10 @@ node_col <- ifelse (names (res$data[[1]]) %in% sf, "lightblue", "white")
 emo <- c("q3",  "q6", "q12", "q7", "q9")
 conf <- c("q4",  "q5", "q8", "q1", "q11")
 risk <- c("q2", "q10")
+
+groups <- factor (c(1, 2, 3, 1, 1, 3, 3,  1, 3, 2, 1, 3), labels = c("Confidence",
+                                                                     "Risk",
+                                                                     "Emotion"))
 ```
 
 
@@ -76,7 +80,10 @@ df_plot <- df_plot %>%
   group_by(id, Items) %>%
   summarise(Mean = mean (val, na.rm = TRUE),
             Sd = sd (val, na.rm = TRUE)) %>%
-  mutate (id = factor (id, levels = c("6mo","12mo","6moNo","6moYes","12moNo", "12moYes")))
+  filter (!grepl("6m", id)) %>%
+  mutate (id = factor (id, levels = c("12mo","12moNo", "12moYes"))) %>%
+  mutate_if(is.numeric, round, 2)  %>%
+  as.data.frame()
 
  f <- ggplot (df_plot) +
   geom_point(aes (x = Items, y = Mean),  
@@ -94,6 +101,23 @@ pdf(width = 15, height = 8, file = "manuscript/sm_fig1.pdf")
 f
 dev.off()
 ```
+
+```{r}
+my_path <- paste0("manuscript/table", 
+                  "sm_table1",
+                  ".docx")
+
+
+ft <- flextable(df_plot) %>%
+  set_caption(caption = "Table. ACL-RSI scores") %>%
+  autofit()
+
+my_doc <- read_docx()  %>% 
+  body_add_flextable(ft) 
+
+print (my_doc, target = my_path)
+```
+
 
 # Network analysis
 
@@ -190,8 +214,8 @@ The thickness of the edges indicate the magnitude of correlation.
 
 node_font_size <- 1.5
 circle_size <- 12
-title_font_size <- 3
-legend_font_size <- 2
+title_font_size <- 2
+legend_font_size <- 0.5
 
 par(mfrow= c(3,2))
 # Visualize network
@@ -232,14 +256,28 @@ dev.off()
 
 ```
 
+```{r, eval = FALSE}
+# Export
+pdf(width = 8, height = 6, file = "manuscript/fig1.pdf")
+par(mfrow= c(2,2))
+# Visualize network
+p1 <- plot (res$nw[[2]], title = res$id[[2]], label.cex = node_font_size, vsize = circle_size,
+            curve = 0.4, curveAll = TRUE, groups = as.factor (groups), title.cex = title_font_size, legend.cex = 0.7, legend = TRUE)
+plot.new( )
+plot (res$nw[[5]], title = res$id[[5]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (groups), title.cex = title_font_size, legend.cex = legend_font_size, legend = FALSE)
+plot (res$nw[[6]], title = res$id[[6]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (groups), title.cex = title_font_size, legend.cex = legend_font_size, legend = FALSE)
+dev.off()
 
+```
 
 ```{r, include = FALSE, eval = FALSE}
 # Easy reporting in manuscript
 
-m = 2
+m = 2 
 
-for (n in 1:6) {
+for (n in c(2, 5, 6)) {
   
 x <- summary (res$edgewts[[n]]) %>%
   ungroup () %>%
@@ -284,11 +322,12 @@ w_fig <- map (res$edgewts, plot, order = "sample", CIstyle = "quantiles")
 w_fig <- map (w_fig, ~.x + 
                   theme(text = element_text(size = 12)), 
               include = "all", print = FALSE, scale = "relative")
+w_fig[[1]] <- w_fig[[3]] <- w_fig[[4]] <- NULL
 
-pdf(width = 10, height = 25, file = "manuscript/fig2.pdf")
+pdf(width = 10, height = 12, file = "manuscript/fig2.pdf")
 cowplot::plot_grid(plotlist = w_fig, 
-                  labels = res$id, 
-                  vjust = 1, hjust = -1, ncol = 2)
+                  labels = res$id[c(2, 5, 6)], 
+                  vjust = 1, hjust = -1, ncol = 3)
 dev.off()
 
 ```
@@ -331,9 +370,11 @@ c_fig <- map (res$nw, centralityPlot, include = c("Closeness", "Strength", "Betw
                         axis.text.x = element_text(angle = 45, hjust = 1)), 
               include = "all", print = FALSE, scale = "relative")
 
+c_fig[[1]] <- c_fig[[3]] <- c_fig[[4]] <- NULL
+
 pdf(width = 20, height = 15, file = "manuscript/fig3.pdf")
 cowplot::plot_grid(plotlist = c_fig, 
-                  labels = res$id,
+                  labels = res$id[c(2, 5, 6)],
                     vjust = 1, hjust = 0, ncol = 2)
 dev.off()
 
@@ -388,9 +429,11 @@ s_fig <- map (s_fig, ~.x +
                         axis.text.x = element_text(angle = 90, hjust = 1)), 
               include = "all", print = FALSE, scale = "relative")
 
-pdf(width = 20, height = 15, file = "manuscript/fig4.pdf")
+s_fig[[1]] <- s_fig[[3]] <- s_fig[[4]] <- NULL
+
+pdf(width = 15, height = 10, file = "manuscript/fig4.pdf")
 cowplot::plot_grid(plotlist = s_fig, 
-                  labels = res$id, 
+                  labels = res$id[c(2, 5, 6)],
                     vjust = 1, hjust = 0, ncol = 2)
 dev.off()
 

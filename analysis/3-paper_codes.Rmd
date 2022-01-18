@@ -1,0 +1,520 @@
+---
+title: "3-paper_codes"
+author: "bernard-liew"
+date: "2021-10-18"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+# Load package
+
+```{r message=FALSE, warning=FALSE}
+# Helper
+library (tidyverse)
+library (arsenal)
+library (cowplot)
+library (arsenal)
+
+# Modelling
+library (huge)
+library (bootnet)
+library (qgraph)
+library (NetworkComparisonTest)
+
+# Parallel
+library (furrr)
+
+# Styling
+library (kableExtra)
+library (officer)
+library (flextable)
+
+```
+
+# Import 
+
+`rts_12` = `"no"` if either missing `"no"`, or `"yes_lower"`. Everything else is `"yes"`.
+
+```{r}
+df <- readRDS ("output/dat_acl.RDS") %>%
+  mutate (rts_6binary = ifelse (rts_6 %in% c("na_no_prior", "no"), "no", 
+                                ifelse (rts_6 %in% c("NA"), "na", "yes")),
+          rts_12binary = ifelse (rts_12 %in% c("no", "yes_lower", "yes_train"), "no", "yes"))
+
+
+```
+
+
+```{r, include = FALSE}
+res <- readRDS ("output/nw_res.RDS")
+nct_res <- readRDS ("output/nct_res.RDS")
+
+sf <- paste0("q", c(1,2,3,5,6,7)) 
+node_col <- ifelse (names (res$data[[1]]) %in% sf, "lightblue", "white")
+
+
+emo <- c("q3",  "q6", "q12", "q7", "q9")
+conf <- c("q4",  "q5", "q8", "q1", "q11")
+risk <- c("q2", "q10")
+
+groups <- factor (c(1, 2, 3, 1, 1, 3, 3,  1, 3, 2, 1, 3), labels = c("Confidence",
+                                                                     "Risk",
+                                                                     "Emotion"))
+```
+
+
+# Descriptive statistics 
+
+## ACL-RSI item scores
+
+```{r}
+df_plot <- res %>%
+  select (id,data) %>%
+  unnest (data) %>%
+  pivot_longer(cols = starts_with("q"),
+               names_to = "Items",
+               values_to = "val") %>%
+  mutate (Items = factor (Items, levels = names (res$data[[1]])))
+
+df_plot <- df_plot %>%
+  group_by(id, Items) %>%
+  summarise(Mean = mean (val, na.rm = TRUE),
+            Sd = sd (val, na.rm = TRUE)) %>%
+  filter (!grepl("6m", id)) %>%
+  mutate (id = factor (id, levels = c("12mo","12moNo", "12moYes"))) %>%
+  #mutate_if(is.numeric, round, 2)  %>%
+  as.data.frame()
+
+ f <- ggplot (df_plot) +
+  geom_point(aes (x = Items, y = Mean),  
+             stat = "identity") +
+  geom_errorbar(aes (x = Items, 
+                     ymin = Mean - Sd, 
+                     ymax = Mean + Sd), 
+                width = 0) +
+  facet_wrap(~ id, scales = "fixed", ncol = 2) +
+  labs (x = "Items",
+        y = "Score") +
+  theme_cowplot() 
+ 
+ f
+
+# pdf(width = 15, height = 8, file = "manuscript/sm_fig1.pdf")
+# f
+# dev.off()
+```
+
+```{r, eval = FALSE, include = FALSE}
+my_path <- paste0("manuscript/table", 
+                  "sm_table1",
+                  ".docx")
+
+
+ft <- flextable(df_plot) %>%
+  colformat_double(digits = 2) %>%
+  set_caption(caption = "Table. ACL-RSI scores") %>%
+  autofit()
+
+my_doc <- read_docx()  %>% 
+  body_add_flextable(ft) 
+
+print (my_doc, target = my_path)
+```
+
+## Demographics
+
+```{r}
+demo <- df %>%
+  select (age_surg, 
+          graft, 
+          sex, 
+          pre_sports_freq, 
+          pre_sports_freql,
+          pre_sports_level, 
+          pre_sports_type, 
+          timebetween, 
+          actual12mth, 
+          rts_12, 
+          rts_12binary)
+
+skimr::skim (demo)
+
+out <- tableby(~. , data=demo)
+summary (out)
+```
+
+
+
+# Network analysis
+
+## Create datasets
+
+```{r message=FALSE, warning=FALSE, eval = FALSE}
+
+# 12th month RSI data
+dat1 <- df%>%
+    select (matches ("_12")) %>%
+    select (!matches ("ax_6m|ax_12m|aclrsi|rts_"))
+# 12th month RSI data on subgroup RTS at 12mo = no
+dat2 <- df%>%
+    filter (rts_12binary == "no") %>%
+    select (matches ("_12")) %>%
+    select (!matches ("ax_6m|ax_12m|aclrsi|rts_"))
+# 12th month RSI data on subgroup RTS at 12mo = yes
+dat3 <- df%>%
+    filter (rts_12binary == "yes") %>%
+    select (matches ("_12")) %>%
+    select (!matches ("ax_6m|ax_12m|aclrsi|rts_"))
+
+var_names <- str_remove (names (dat1), "_6")
+names(dat1) <- names(dat2) <- names(dat3) <- paste0("q", 1:ncol (dat1))
+
+res <- tibble (subgrp = c(1:3),
+               id = c("12mo", "12moNo", "12moYes"),
+               data =  list (dat1, dat2, dat3))
+
+```
+
+## Perform analysis
+
+```{r, eval = FALSE}
+B <- 1000
+plan (multisession)
+stats_type <- c("strength", "betweenness", "closeness")
+
+res <- res %>%
+  mutate (dat_norm = map (data, huge.npn)) %>%
+  mutate (nw = map (dat_norm, estimateNetwork,
+                         default="EBICglasso",
+                         corMethod = "cor",
+                          tuning = 0.5,
+                          lambda.min.ratio = 0.001,
+                          corArgs =
+                            list(method = "pearson",
+                                 use = "pairwise.complete.obs"))) %>%
+  # Get centrality measures
+  mutate (centr = map (nw, centralityTable)) %>%
+  mutate (centr_stb = future_map (nw, 
+                                  bootnet, 
+                                  nBoots = B,
+                                  type = "case",
+                                  statistics = stats_type,
+                                  .options = furrr_options(seed = TRUE))) %>%
+  mutate (cor_stb = map (centr_stb,
+                         corStability)) %>%
+  mutate (edgewts = future_map (nw, 
+                                bootnet, 
+                                nBoots = B,
+                                .options = furrr_options(seed = TRUE)))
+
+# NCT
+
+nct_res <- NCT(res$nw[[2]], 
+               res$nw[[3]], 
+               it = 1000,
+               test.edges=TRUE, 
+               edges="all",
+               test.centrality = TRUE,
+               centrality = "all",
+               p.adjust.methods = "none",
+               verbose = FALSE,
+               progressbar = FALSE)
+   
+saveRDS(res,
+        "output/nw_res.RDS")  
+
+saveRDS(nct_res,
+        "output/nct_res.RDS") 
+```
+
+
+## Results
+
+### Plot network
+
+
+```{r message=FALSE, warning=FALSE, fig.height=9, fig.width=9}
+
+node_font_size <- 1.5
+circle_size <- 12
+title_font_size <- 2
+legend_font_size <- 0.5
+```
+
+```{r, eval = FALSE}
+# Export
+pdf(width = 8, height = 6, file = "manuscript/fig1.pdf")
+par(mfrow= c(2,2))
+# Visualize network
+p1 <- plot (res$nw[[1]], title = res$id[[1]], label.cex = node_font_size, vsize = circle_size,
+            curve = 0.4, curveAll = TRUE, groups = as.factor (groups), title.cex = title_font_size, legend.cex = 0.7, legend = TRUE)
+plot.new( )
+plot (res$nw[[2]], title = res$id[[2]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (groups), title.cex = title_font_size, legend.cex = legend_font_size, legend = FALSE)
+plot (res$nw[[3]], title = res$id[[3]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (groups), title.cex = title_font_size, legend.cex = legend_font_size, legend = FALSE)
+dev.off()
+
+```
+
+```{r}
+par(mfrow= c(2,2))
+# Visualize network
+p1 <- plot (res$nw[[1]], title = res$id[[1]], label.cex = node_font_size, vsize = circle_size,
+            curve = 0.4, curveAll = TRUE, groups = as.factor (groups), title.cex = title_font_size, legend.cex = 0.7, legend = TRUE)
+plot.new( )
+plot (res$nw[[2]], title = res$id[[2]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (groups), title.cex = title_font_size, legend.cex = legend_font_size, legend = FALSE)
+plot (res$nw[[3]], title = res$id[[3]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (groups), title.cex = title_font_size, legend.cex = legend_font_size, legend = FALSE)
+```
+
+
+```{r, include = FALSE, eval = FALSE}
+# Easy reporting in manuscript
+
+m = 2
+
+for (n in c(1:3)) {
+  
+x <- summary (res$edgewts[[n]]) %>%
+  ungroup () %>%
+  filter (type == "edge" & sample != 0) %>%
+  dplyr::select (id, node1, node2, sample, q2.5, q97.5) %>%
+  mutate (samp_abs = abs (sample)) %>%
+  slice_max (samp_abs, n = 2) %>%
+  mutate_if (is.numeric, round, 2) 
+
+
+
+cat ("The edge with the greatest weight magnitude was between", x[[m,"node1"]],
+     "and",   x[[m,"node2"]],
+     "with a value of", x[[m,"sample"]],
+     "([95%CI (", x[[m, "q2.5"]], "to", x[[m,"q97.5"]], "])", "\n")
+
+}
+```
+
+### Plot edge weights stability
+
+
+```{r, eval = FALSE, include = FALSE}
+
+# export
+w_fig <- map (res$edgewts, plot, order = "sample", CIstyle = "quantiles")
+
+w_fig <- map (w_fig, ~.x + 
+                  theme(text = element_text(size = 12)), 
+              include = "all", print = FALSE, scale = "relative")
+
+pdf(width = 10, height = 12, file = "manuscript/fig2.pdf")
+cowplot::plot_grid(plotlist = w_fig, 
+                  labels = res$id, 
+                  vjust = 1, hjust = -1, ncol = 3)
+dev.off()
+
+```
+
+```{r}
+
+w_fig <- map (res$edgewts, plot, order = "sample", CIstyle = "quantiles")
+
+w_fig <- map (w_fig, ~.x + 
+                  theme(text = element_text(size = 12)), 
+              include = "all", print = FALSE, scale = "relative")
+
+cowplot::plot_grid(plotlist = w_fig, 
+                  labels = res$id, 
+                  vjust = 1, hjust = -1, ncol = 3)
+```
+
+
+### Plot centrality
+
+
+```{r eval = FALSE, include = FALSE}
+
+# export
+c_fig <- map (res$nw, centralityPlot, include = c("Strength"#,
+                                                  #"Closeness", 
+                                                  #"Betweenness"
+                                                  ), 
+              print = FALSE, scale = "relative") %>%
+  map (~.x + 
+                  scale_x_continuous(breaks= c(0, 0.5, 1), lim = c(0, 1)) + 
+                  theme(text = element_text(size = 20), 
+                        axis.text.x = element_text(angle = 45, hjust = 1)), 
+              include = "all", print = FALSE, scale = "relative")
+
+
+pdf(width = 10, height = 7, file = "manuscript/fig3.pdf")
+cowplot::plot_grid(plotlist = c_fig, 
+                  labels = res$id,
+                    vjust = 1, hjust = 0.05, ncol = 3)
+dev.off()
+
+```
+
+```{r}
+c_fig <- map (res$nw, centralityPlot, include = c("Closeness", "Strength", "Betweenness"), 
+              print = FALSE, scale = "relative") %>%
+  map (~.x + 
+                  scale_x_continuous(breaks= c(0, 0.5, 1), lim = c(0, 1)) + 
+                  theme(text = element_text(size = 20), 
+                        axis.text.x = element_text(angle = 45, hjust = 1)), 
+              include = "all", print = FALSE, scale = "relative")
+
+cowplot::plot_grid(plotlist = c_fig, 
+                  labels = res$id,
+                    vjust = 1, hjust = 0, ncol = 2)
+```
+
+
+```{r, eval = FALSE, include = FALSE}
+
+for (n in seq_along (res$id)) {
+  
+  c_val <- c_fig[[n]]$data %>%
+    filter (measure == "Strength") %>%
+    slice_max(value, n =6) %>%
+    # group_by(node) %>%
+    # mutate (ave = mean (value)) %>%
+    # ungroup () %>%
+    # slice_max (ave, n = 6) %>%
+    pull (node) %>%
+    unique () %>%
+    as.character()
+  
+  cat ("At", res$id[n], "across all three centrality measures, the two nodes with the greatest value was",     c_val[[1]], "and", c_val[[2]], "\n")
+
+}
+
+
+```
+
+
+### Plot centrality stability
+
+```{r eval = FALSE, include = FALSE}
+# expor
+s_fig <- map (res$centr_stb, plot, statistics = c("closeness", "strength", "betweenness"))
+
+s_fig <- map (s_fig, ~.x + 
+                ylab ("Ave Corr") + 
+                  theme(text = element_text(size = 20), 
+                        axis.text.x = element_text(angle = 90, hjust = 1)), 
+              include = "all", print = FALSE, scale = "relative")
+
+
+pdf(width = 15, height = 10, file = "manuscript/fig4.pdf")
+cowplot::plot_grid(plotlist = s_fig, 
+                  labels = res$id,
+                    vjust = 1, hjust = 0, ncol = 2)
+dev.off()
+
+```
+
+```{r}
+s_fig <- map (res$centr_stb, plot, statistics = c("closeness", "strength", "betweenness"))
+
+s_fig <- map (s_fig, ~.x + 
+                ylab ("Ave Corr") + 
+                  theme(text = element_text(size = 20), 
+                        axis.text.x = element_text(angle = 90, hjust = 1)), 
+              include = "all", print = FALSE, scale = "relative")
+
+cowplot::plot_grid(plotlist = s_fig, 
+                  labels = res$id,
+                    vjust = 1, hjust = 0, ncol = 2)
+```
+
+
+## Get CS coefficient
+
+```{r, results = "asis", message=FALSE, warning=FALSE}
+cs_coef <- res %>%
+  select (id, cor_stb) %>%
+  unnest () %>%
+  ungroup() %>%
+  mutate (measure = rep (c("betweenness", "closeness", "strength"), 3)) %>%
+  mutate (CS = round (cor_stb, 2))
+cs_coef %>%
+  knitr::kable (caption = "Stability of centrality indices")
+
+```
+
+```{r eval = FALSE, include = FALSE}
+my_path <- paste0("manuscript/table", 
+                  "CScoef",
+                  ".docx")
+
+
+ft <- flextable(cs_coef) %>%
+  set_caption(caption = "Table 2. CS Coefficient") %>%
+  autofit()
+
+my_doc <- read_docx()  %>% 
+  body_add_flextable(ft) %>%
+  body_end_section_landscape()
+
+print (my_doc, target = my_path)
+```
+
+## NCT
+
+```{r}
+einv <- nct_res$einv.perm
+einv.mean <- apply (einv, c(1,2), mean) 
+einv.lb <- apply (einv, c(1,2), quantile, 0.025) 
+einv.ub <- apply (einv, c(1,2), quantile, 0.975) 
+rownames(einv.mean) <- colnames(einv.mean) <- 
+  rownames(einv.lb) <- colnames(einv.lb) <- 
+  rownames(einv.ub) <- colnames(einv.ub) <- paste0("q", 1:12)
+
+einv.mean <- einv.mean %>%
+  rstatix::cor_gather()
+einv.lb <-einv.lb %>%
+  rstatix::cor_gather()
+einv.ub <- einv.ub %>%
+  rstatix::cor_gather()
+
+einv_pval <- nct_res$einv.pvals %>%
+  rename (var2 = Var1,
+          var1 = Var2)%>%
+  mutate_if (is.factor, as.character)
+
+einv_df <- data.frame(einv.mean,
+                      lb = einv.lb$cor,
+                      ub = einv.ub$cor) %>%
+  distinct (cor, lb, ub, .keep_all= TRUE) %>%
+  inner_join(einv_pval, by = c("var1", "var2"))
+
+einv_df %>%
+  filter (`p-value` < 0.05)
+```
+
+# Centrality
+
+```{r}
+cen.perm <- nct_res$diffcen.perm %>%
+  data.frame() %>%
+  select (matches ("\\.strength"))
+
+cen.perm.mean <- apply (cen.perm, 2, mean) 
+cen.perm.lb <- apply (cen.perm, 2, quantile, 0.025) 
+cen.perm.ub <- apply (cen.perm, 2, quantile, 0.975) 
+
+cen.pval <- nct_res$diffcen.pval %>%
+  data.frame() %>%
+  select (starts_with ("strength"))
+
+cen.pval_df <- data.frame(var = paste0("q", 1:12),
+                          est = cen.perm.mean,
+                          lb = cen.perm.lb,
+                          ub = cen.perm.ub,
+                          p_val = cen.pval$strength) 
+
+cen.pval_df  %>%
+  filter ( p_val < 0.05)
+```

@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="bernard-liew" />
+
+<meta name="date" content="2021-10-18" />
+
+<title>3-paper_codes</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">acl_rsi</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">3-paper_codes</h1>
+<h4 class="author">bernard-liew</h4>
+<h4 class="date">2021-10-18</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2022-01-18
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>acl_rsi/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown file has staged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20210219code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20210219)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20210219code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20210219)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcombernardliewACLRSILaTrobetree19fd7a2dfdc06107be138e15fcd63c400740dffdtargetblank19fd7a2a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/bernard-liew/ACL-RSI-La-Trobe-/tree/19fd7a2dfdc06107be138e15fcd63c400740dffd" target="_blank">19fd7a2</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcombernardliewACLRSILaTrobetree19fd7a2dfdc06107be138e15fcd63c400740dffdtargetblank19fd7a2a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/bernard-liew/ACL-RSI-La-Trobe-/tree/19fd7a2dfdc06107be138e15fcd63c400740dffd" target="_blank">19fd7a2</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    analysis/figure/
+    Ignored:    manuscript/
+
+Untracked files:
+    Untracked:  output/nct_res.RDS
+
+Unstaged changes:
+    Modified:   analysis/3-paper_codes.Rmd
+    Modified:   output/nw_res.RDS
+
+Staged changes:
+    Modified:   analysis/2-analysis.Rmd
+    New:        analysis/3-paper_codes.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<div id="load-package" class="section level1">
+<h1>Load package</h1>
+<pre class="r"><code># Helper
+library (tidyverse)
+library (arsenal)
+library (cowplot)
+library (arsenal)
+
+# Modelling
+library (huge)
+library (bootnet)
+library (qgraph)
+library (NetworkComparisonTest)
+
+# Parallel
+library (furrr)
+
+# Styling
+library (kableExtra)
+library (officer)
+library (flextable)</code></pre>
+</div>
+<div id="import" class="section level1">
+<h1>Import</h1>
+<p><code>rts_12</code> = <code>"no"</code> if either missing <code>"no"</code>, or <code>"yes_lower"</code>. Everything else is <code>"yes"</code>.</p>
+<pre class="r"><code>df &lt;- readRDS (&quot;output/dat_acl.RDS&quot;) %&gt;%
+  mutate (rts_6binary = ifelse (rts_6 %in% c(&quot;na_no_prior&quot;, &quot;no&quot;), &quot;no&quot;, 
+                                ifelse (rts_6 %in% c(&quot;NA&quot;), &quot;na&quot;, &quot;yes&quot;)),
+          rts_12binary = ifelse (rts_12 %in% c(&quot;no&quot;, &quot;yes_lower&quot;, &quot;yes_train&quot;), &quot;no&quot;, &quot;yes&quot;))</code></pre>
+</div>
+<div id="descriptive-statistics" class="section level1">
+<h1>Descriptive statistics</h1>
+<div id="acl-rsi-item-scores" class="section level2">
+<h2>ACL-RSI item scores</h2>
+<pre class="r"><code>df_plot &lt;- res %&gt;%
+  select (id,data) %&gt;%
+  unnest (data) %&gt;%
+  pivot_longer(cols = starts_with(&quot;q&quot;),
+               names_to = &quot;Items&quot;,
+               values_to = &quot;val&quot;) %&gt;%
+  mutate (Items = factor (Items, levels = names (res$data[[1]])))
+
+df_plot &lt;- df_plot %&gt;%
+  group_by(id, Items) %&gt;%
+  summarise(Mean = mean (val, na.rm = TRUE),
+            Sd = sd (val, na.rm = TRUE)) %&gt;%
+  filter (!grepl(&quot;6m&quot;, id)) %&gt;%
+  mutate (id = factor (id, levels = c(&quot;12mo&quot;,&quot;12moNo&quot;, &quot;12moYes&quot;))) %&gt;%
+  #mutate_if(is.numeric, round, 2)  %&gt;%
+  as.data.frame()</code></pre>
+<pre><code>`summarise()` has grouped output by &#39;id&#39;. You can override using the `.groups` argument.</code></pre>
+<pre class="r"><code> f &lt;- ggplot (df_plot) +
+  geom_point(aes (x = Items, y = Mean),  
+             stat = &quot;identity&quot;) +
+  geom_errorbar(aes (x = Items, 
+                     ymin = Mean - Sd, 
+                     ymax = Mean + Sd), 
+                width = 0) +
+  facet_wrap(~ id, scales = &quot;fixed&quot;, ncol = 2) +
+  labs (x = &quot;Items&quot;,
+        y = &quot;Score&quot;) +
+  theme_cowplot() 
+ 
+ f</code></pre>
+<p><img src="figure/3-paper_codes.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># pdf(width = 15, height = 8, file = &quot;manuscript/sm_fig1.pdf&quot;)
+# f
+# dev.off()</code></pre>
+</div>
+<div id="demographics" class="section level2">
+<h2>Demographics</h2>
+<pre class="r"><code>demo &lt;- df %&gt;%
+  select (age_surg, 
+          graft, 
+          sex, 
+          pre_sports_freq, 
+          pre_sports_freql,
+          pre_sports_level, 
+          pre_sports_type, 
+          timebetween, 
+          actual12mth, 
+          rts_12, 
+          rts_12binary)
+
+skimr::skim (demo)</code></pre>
+<table style="width: auto;" class="table table-condensed">
+<caption>
+Data summary
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Name
+</td>
+<td style="text-align:left;">
+demo
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Number of rows
+</td>
+<td style="text-align:left;">
+441
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Number of columns
+</td>
+<td style="text-align:left;">
+11
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+_______________________
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Column type frequency:
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+character
+</td>
+<td style="text-align:left;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+numeric
+</td>
+<td style="text-align:left;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+________________________
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Group variables
+</td>
+<td style="text-align:left;">
+None
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+skim_variable
+</th>
+<th style="text-align:right;">
+n_missing
+</th>
+<th style="text-align:right;">
+complete_rate
+</th>
+<th style="text-align:right;">
+min
+</th>
+<th style="text-align:right;">
+max
+</th>
+<th style="text-align:right;">
+empty
+</th>
+<th style="text-align:right;">
+n_unique
+</th>
+<th style="text-align:right;">
+whitespace
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+graft
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+pre_sports_freq
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+pre_sports_freql
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+pre_sports_level
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+pre_sports_type
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.99
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+117
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+rts_12
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+rts_12binary
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+skim_variable
+</th>
+<th style="text-align:right;">
+n_missing
+</th>
+<th style="text-align:right;">
+complete_rate
+</th>
+<th style="text-align:right;">
+mean
+</th>
+<th style="text-align:right;">
+sd
+</th>
+<th style="text-align:right;">
+p0
+</th>
+<th style="text-align:right;">
+p25
+</th>
+<th style="text-align:right;">
+p50
+</th>
+<th style="text-align:right;">
+p75
+</th>
+<th style="text-align:right;">
+p100
+</th>
+<th style="text-align:left;">
+hist
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+age_surg
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+24.61
+</td>
+<td style="text-align:right;">
+7.38
+</td>
+<td style="text-align:right;">
+13.67
+</td>
+<td style="text-align:right;">
+18.30
+</td>
+<td style="text-align:right;">
+23.50
+</td>
+<td style="text-align:right;">
+28.73
+</td>
+<td style="text-align:right;">
+46.94
+</td>
+<td style="text-align:left;">
+&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2585&gt;&lt;U+2581&gt;&lt;U+2581&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+timebetween
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5.83
+</td>
+<td style="text-align:right;">
+0.66
+</td>
+<td style="text-align:right;">
+3.90
+</td>
+<td style="text-align:right;">
+5.43
+</td>
+<td style="text-align:right;">
+5.80
+</td>
+<td style="text-align:right;">
+6.16
+</td>
+<td style="text-align:right;">
+8.06
+</td>
+<td style="text-align:left;">
+&lt;U+2581&gt;&lt;U+2583&gt;&lt;U+2587&gt;&lt;U+2582&gt;&lt;U+2581&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+actual12mth
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+12.15
+</td>
+<td style="text-align:right;">
+0.58
+</td>
+<td style="text-align:right;">
+10.96
+</td>
+<td style="text-align:right;">
+11.79
+</td>
+<td style="text-align:right;">
+11.95
+</td>
+<td style="text-align:right;">
+12.34
+</td>
+<td style="text-align:right;">
+14.69
+</td>
+<td style="text-align:left;">
+&lt;U+2581&gt;&lt;U+2587&gt;&lt;U+2582&gt;&lt;U+2581&gt;&lt;U+2581&gt;
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>out &lt;- tableby(~. , data=demo)
+summary (out)</code></pre>
+<pre><code>
+
+|                                                   | Overall (N=441) |
+|:--------------------------------------------------|:---------------:|
+|**age_surg**                                       |                 |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Mean (SD)                        | 24.605 (7.385)  |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Range                            | 13.668 - 46.942 |
+|**graft**                                          |                 |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;-N/R                             |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;6strand graft (ST3/Gr3)          |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;C/L PT                           |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;LARS                             |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;PT                               |    10 (2.3%)    |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;QT                               |    42 (9.5%)    |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;ST                               |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;ST/Gr                            |    36 (8.2%)    |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;ST/GR                            |   327 (74.1%)   |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;ST3/Gr2                          |    5 (1.1%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;ST3/GR2                          |    14 (3.2%)    |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;ST4                              |    2 (0.5%)     |
+|**sex**                                            |                 |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;f                                |   184 (41.7%)   |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;m                                |   257 (58.3%)   |
+|**pre_sports_freq**                                |                 |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;N-Miss                           |        2        |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;1-3 days per week                |   175 (39.9%)   |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;1-3 times per month              |    11 (2.5%)    |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;4-7 days per week                |   253 (57.6%)   |
+|**pre_sports_freql**                               |                 |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;N-Miss                           |        2        |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;1-3days/mth                      |    11 (2.5%)    |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;1-3days/wk                       |   175 (39.9%)   |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;4-7days/wk                       |   253 (57.6%)   |
+|**pre_sports_level**                               |                 |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;N-Miss                           |        2        |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;competitive                      |   168 (38.3%)   |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;freq                             |   231 (52.6%)   |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;pro                              |    10 (2.3%)    |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;some                             |    30 (6.8%)    |
+|**pre_sports_type**                                |                 |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;N-Miss                           |        3        |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;aerobics                         |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;afl                              |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Afl                              |    7 (1.6%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;AFL                              |    29 (6.6%)    |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;afl (aussie rules)               |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;AFL Football                     |    2 (0.5%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;AFL, Bobsled, track &amp; field      |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;AFL, Triathlon                   |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;AFL9s                            |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Amateur Australian Rules         |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;American Football                |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;American Football/Gridiron       |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Athletics                        |    2 (0.5%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Aussie rules                     |    5 (1.1%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Aussie Rules                     |    3 (0.7%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;aussie rules football            |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Aussie Rules Football            |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Australia rules                  |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Australia rules footy            |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Australian Football              |    2 (0.5%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;australian rules                 |    3 (0.7%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Australian rules                 |    21 (4.8%)    |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Australian Rules                 |    29 (6.6%)    |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Australian Rules (VAFA)          |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Australian rules football        |    4 (0.9%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Australian Rules football        |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Australian Rules Football        |    8 (1.8%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Australian rules footy           |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;basketball                       |    2 (0.5%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Basketball                       |    32 (7.3%)    |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;BASKETBALL                       |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Basketball/netball               |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;brazilian jiu jitsu              |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Brazilian jiu jitsu              |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Cheerleading                     |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Competitive Cheerleading         |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Cricket                          |    5 (1.1%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Crossfit                         |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;cycling                          |    3 (0.7%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Cycling                          |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Dance                            |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Dance (Tap, Jazz, Contemporary)  |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Dodgeball                        |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Equine Show jumping              |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Fencing                          |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Field hockey                     |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Field Hockey                     |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;football                         |    6 (1.4%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Football                         |    20 (4.6%)    |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;football - AFL                   |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Football (AFL)                   |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Football afl                     |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Football Aus Rules               |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Football/Aussie Rules            |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Footy                            |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;futsal                           |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Futsal                           |    3 (0.7%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Golf                             |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Gridiron                         |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Gym                              |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Gym workouts/classes             |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;gymnastics                       |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Gymnastics                       |    2 (0.5%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Hockey                           |    7 (1.6%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;indoor soccer                    |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Indoor soccer                    |    3 (0.7%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Indoor Soccer                    |    3 (0.7%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Jiu jitsu                        |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Jiu Jitsu                        |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;jogging/sprinting                |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Judo                             |    2 (0.5%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Karate                           |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Kickboxing                       |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Kitesurfing                      |    2 (0.5%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Krav Maga (martial arts)         |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Lacrosse                         |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Lawn bowls                       |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;mixed martial arts               |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;motocross                        |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Motocross                        |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Motorcross                       |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;netball                          |    8 (1.8%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Netball                          |   78 (17.8%)    |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Netball, waterskiing             |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;pilates/yoga                     |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Pole dancing                     |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Regular weights inc squatting    |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Roller derby                     |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Rowing                           |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Rugby                            |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Rugby League                     |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Rugby union                      |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Rugby Union                      |    2 (0.5%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;running                          |    2 (0.5%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Running                          |    5 (1.1%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Running (orienteering)           |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Skiing                           |    2 (0.5%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Skiing.                          |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Snow skiing - freestyle coaching |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Snowboard/wakeboarding           |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Snowboarding                     |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;soccer                           |    6 (1.4%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Soccer                           |    36 (8.2%)    |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Soccer,  skiing                  |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Softball                         |    2 (0.5%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Squash                           |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Surfing                          |    2 (0.5%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;taekwondo                        |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Taekwondo                        |    2 (0.5%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Ten Pin Bowling                  |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;tennis                           |    2 (0.5%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Tennis                           |    5 (1.1%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Touch Rugby                      |    3 (0.7%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Track and field                  |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Ultimate Frisbee                 |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;walking the dog                  |    1 (0.2%)     |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Water skiing                     |    1 (0.2%)     |
+|**timebetween**                                    |                 |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Mean (SD)                        |  5.834 (0.663)  |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Range                            |  3.902 - 8.061  |
+|**actual12mth**                                    |                 |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Mean (SD)                        | 12.153 (0.580)  |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;Range                            | 10.958 - 14.695 |
+|**rts_12**                                         |                 |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;no                               |   154 (34.9%)   |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;yes_lower                        |   60 (13.6%)    |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;yes_same_high                    |   115 (26.1%)   |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;yes_train                        |   112 (25.4%)   |
+|**rts_12binary**                                   |                 |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;no                               |   326 (73.9%)   |
+|&amp;nbsp;&amp;nbsp;&amp;nbsp;yes                              |   115 (26.1%)   |</code></pre>
+</div>
+</div>
+<div id="network-analysis" class="section level1">
+<h1>Network analysis</h1>
+<div id="create-datasets" class="section level2">
+<h2>Create datasets</h2>
+<pre class="r"><code># 12th month RSI data
+dat1 &lt;- df%&gt;%
+    select (matches (&quot;_12&quot;)) %&gt;%
+    select (!matches (&quot;ax_6m|ax_12m|aclrsi|rts_&quot;))
+# 12th month RSI data on subgroup RTS at 12mo = no
+dat2 &lt;- df%&gt;%
+    filter (rts_12binary == &quot;no&quot;) %&gt;%
+    select (matches (&quot;_12&quot;)) %&gt;%
+    select (!matches (&quot;ax_6m|ax_12m|aclrsi|rts_&quot;))
+# 12th month RSI data on subgroup RTS at 12mo = yes
+dat3 &lt;- df%&gt;%
+    filter (rts_12binary == &quot;yes&quot;) %&gt;%
+    select (matches (&quot;_12&quot;)) %&gt;%
+    select (!matches (&quot;ax_6m|ax_12m|aclrsi|rts_&quot;))
+
+var_names &lt;- str_remove (names (dat1), &quot;_6&quot;)
+names(dat1) &lt;- names(dat2) &lt;- names(dat3) &lt;- paste0(&quot;q&quot;, 1:ncol (dat1))
+
+res &lt;- tibble (subgrp = c(1:3),
+               id = c(&quot;12mo&quot;, &quot;12moNo&quot;, &quot;12moYes&quot;),
+               data =  list (dat1, dat2, dat3))</code></pre>
+</div>
+<div id="perform-analysis" class="section level2">
+<h2>Perform analysis</h2>
+<pre class="r"><code>B &lt;- 1000
+plan (multisession)
+stats_type &lt;- c(&quot;strength&quot;, &quot;betweenness&quot;, &quot;closeness&quot;)
+
+res &lt;- res %&gt;%
+  mutate (dat_norm = map (data, huge.npn)) %&gt;%
+  mutate (nw = map (dat_norm, estimateNetwork,
+                         default=&quot;EBICglasso&quot;,
+                         corMethod = &quot;cor&quot;,
+                          tuning = 0.5,
+                          lambda.min.ratio = 0.001,
+                          corArgs =
+                            list(method = &quot;pearson&quot;,
+                                 use = &quot;pairwise.complete.obs&quot;))) %&gt;%
+  # Get centrality measures
+  mutate (centr = map (nw, centralityTable)) %&gt;%
+  mutate (centr_stb = future_map (nw, 
+                                  bootnet, 
+                                  nBoots = B,
+                                  type = &quot;case&quot;,
+                                  statistics = stats_type,
+                                  .options = furrr_options(seed = TRUE))) %&gt;%
+  mutate (cor_stb = map (centr_stb,
+                         corStability)) %&gt;%
+  mutate (edgewts = future_map (nw, 
+                                bootnet, 
+                                nBoots = B,
+                                .options = furrr_options(seed = TRUE)))
+
+# NCT
+
+nct_res &lt;- NCT(res$nw[[2]], 
+               res$nw[[3]], 
+               it = 1000,
+               test.edges=TRUE, 
+               edges=&quot;all&quot;,
+               test.centrality = TRUE,
+               centrality = &quot;all&quot;,
+               p.adjust.methods = &quot;none&quot;,
+               verbose = FALSE,
+               progressbar = FALSE)
+   
+saveRDS(res,
+        &quot;output/nw_res.RDS&quot;)  
+
+saveRDS(nct_res,
+        &quot;output/nct_res.RDS&quot;) </code></pre>
+</div>
+<div id="results" class="section level2">
+<h2>Results</h2>
+<div id="plot-network" class="section level3">
+<h3>Plot network</h3>
+<pre class="r"><code>node_font_size &lt;- 1.5
+circle_size &lt;- 12
+title_font_size &lt;- 2
+legend_font_size &lt;- 0.5</code></pre>
+<pre class="r"><code># Export
+pdf(width = 8, height = 6, file = &quot;manuscript/fig1.pdf&quot;)
+par(mfrow= c(2,2))
+# Visualize network
+p1 &lt;- plot (res$nw[[1]], title = res$id[[1]], label.cex = node_font_size, vsize = circle_size,
+            curve = 0.4, curveAll = TRUE, groups = as.factor (groups), title.cex = title_font_size, legend.cex = 0.7, legend = TRUE)
+plot.new( )
+plot (res$nw[[2]], title = res$id[[2]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (groups), title.cex = title_font_size, legend.cex = legend_font_size, legend = FALSE)
+plot (res$nw[[3]], title = res$id[[3]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (groups), title.cex = title_font_size, legend.cex = legend_font_size, legend = FALSE)
+dev.off()</code></pre>
+<pre class="r"><code>par(mfrow= c(2,2))
+# Visualize network
+p1 &lt;- plot (res$nw[[1]], title = res$id[[1]], label.cex = node_font_size, vsize = circle_size,
+            curve = 0.4, curveAll = TRUE, groups = as.factor (groups), title.cex = title_font_size, legend.cex = 0.7, legend = TRUE)
+plot.new( )
+plot (res$nw[[2]], title = res$id[[2]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (groups), title.cex = title_font_size, legend.cex = legend_font_size, legend = FALSE)
+plot (res$nw[[3]], title = res$id[[3]], layout = p1$layout, label.cex = node_font_size, vsize = circle_size,
+      curve = 0.4, curveAll = TRUE, groups = as.factor (groups), title.cex = title_font_size, legend.cex = legend_font_size, legend = FALSE)</code></pre>
+<p><img src="figure/3-paper_codes.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="plot-edge-weights-stability" class="section level3">
+<h3>Plot edge weights stability</h3>
+<pre class="r"><code>w_fig &lt;- map (res$edgewts, plot, order = &quot;sample&quot;, CIstyle = &quot;quantiles&quot;)
+
+w_fig &lt;- map (w_fig, ~.x + 
+                  theme(text = element_text(size = 12)), 
+              include = &quot;all&quot;, print = FALSE, scale = &quot;relative&quot;)
+
+cowplot::plot_grid(plotlist = w_fig, 
+                  labels = res$id, 
+                  vjust = 1, hjust = -1, ncol = 3)</code></pre>
+<p><img src="figure/3-paper_codes.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="plot-centrality" class="section level3">
+<h3>Plot centrality</h3>
+<pre class="r"><code>c_fig &lt;- map (res$nw, centralityPlot, include = c(&quot;Closeness&quot;, &quot;Strength&quot;, &quot;Betweenness&quot;), 
+              print = FALSE, scale = &quot;relative&quot;) %&gt;%
+  map (~.x + 
+                  scale_x_continuous(breaks= c(0, 0.5, 1), lim = c(0, 1)) + 
+                  theme(text = element_text(size = 20), 
+                        axis.text.x = element_text(angle = 45, hjust = 1)), 
+              include = &quot;all&quot;, print = FALSE, scale = &quot;relative&quot;)</code></pre>
+<pre><code>Note: relative centrality indices are shown on x-axis rather than raw centrality indices.
+Note: relative centrality indices are shown on x-axis rather than raw centrality indices.
+Note: relative centrality indices are shown on x-axis rather than raw centrality indices.</code></pre>
+<pre class="r"><code>cowplot::plot_grid(plotlist = c_fig, 
+                  labels = res$id,
+                    vjust = 1, hjust = 0, ncol = 2)</code></pre>
+<p><img src="figure/3-paper_codes.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="plot-centrality-stability" class="section level3">
+<h3>Plot centrality stability</h3>
+<pre class="r"><code>s_fig &lt;- map (res$centr_stb, plot, statistics = c(&quot;closeness&quot;, &quot;strength&quot;, &quot;betweenness&quot;))
+
+s_fig &lt;- map (s_fig, ~.x + 
+                ylab (&quot;Ave Corr&quot;) + 
+                  theme(text = element_text(size = 20), 
+                        axis.text.x = element_text(angle = 90, hjust = 1)), 
+              include = &quot;all&quot;, print = FALSE, scale = &quot;relative&quot;)
+
+cowplot::plot_grid(plotlist = s_fig, 
+                  labels = res$id,
+                    vjust = 1, hjust = 0, ncol = 2)</code></pre>
+<p><img src="figure/3-paper_codes.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="get-cs-coefficient" class="section level2">
+<h2>Get CS coefficient</h2>
+<pre class="r"><code>cs_coef &lt;- res %&gt;%
+  select (id, cor_stb) %&gt;%
+  unnest () %&gt;%
+  ungroup() %&gt;%
+  mutate (measure = rep (c(&quot;betweenness&quot;, &quot;closeness&quot;, &quot;strength&quot;), 3)) %&gt;%
+  mutate (CS = round (cor_stb, 2))
+cs_coef %&gt;%
+  knitr::kable (caption = &quot;Stability of centrality indices&quot;)</code></pre>
+<table>
+<caption>
+Stability of centrality indices
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:right;">
+cor_stb
+</th>
+<th style="text-align:left;">
+measure
+</th>
+<th style="text-align:right;">
+CS
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+12mo
+</td>
+<td style="text-align:right;">
+0.3605442
+</td>
+<td style="text-align:left;">
+betweenness
+</td>
+<td style="text-align:right;">
+0.36
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12mo
+</td>
+<td style="text-align:right;">
+0.5170068
+</td>
+<td style="text-align:left;">
+closeness
+</td>
+<td style="text-align:right;">
+0.52
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12mo
+</td>
+<td style="text-align:right;">
+0.7505669
+</td>
+<td style="text-align:left;">
+strength
+</td>
+<td style="text-align:right;">
+0.75
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12moNo
+</td>
+<td style="text-align:right;">
+0.3619632
+</td>
+<td style="text-align:left;">
+betweenness
+</td>
+<td style="text-align:right;">
+0.36
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12moNo
+</td>
+<td style="text-align:right;">
+0.3619632
+</td>
+<td style="text-align:left;">
+closeness
+</td>
+<td style="text-align:right;">
+0.36
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12moNo
+</td>
+<td style="text-align:right;">
+0.7484663
+</td>
+<td style="text-align:left;">
+strength
+</td>
+<td style="text-align:right;">
+0.75
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12moYes
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:left;">
+betweenness
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12moYes
+</td>
+<td style="text-align:right;">
+0.2086957
+</td>
+<td style="text-align:left;">
+closeness
+</td>
+<td style="text-align:right;">
+0.21
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12moYes
+</td>
+<td style="text-align:right;">
+0.5130435
+</td>
+<td style="text-align:left;">
+strength
+</td>
+<td style="text-align:right;">
+0.51
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="nct" class="section level2">
+<h2>NCT</h2>
+<pre class="r"><code>einv &lt;- nct_res$einv.perm
+einv.mean &lt;- apply (einv, c(1,2), mean) 
+einv.lb &lt;- apply (einv, c(1,2), quantile, 0.025) 
+einv.ub &lt;- apply (einv, c(1,2), quantile, 0.975) 
+rownames(einv.mean) &lt;- colnames(einv.mean) &lt;- 
+  rownames(einv.lb) &lt;- colnames(einv.lb) &lt;- 
+  rownames(einv.ub) &lt;- colnames(einv.ub) &lt;- paste0(&quot;q&quot;, 1:12)
+
+einv.mean &lt;- einv.mean %&gt;%
+  rstatix::cor_gather()
+einv.lb &lt;-einv.lb %&gt;%
+  rstatix::cor_gather()
+einv.ub &lt;- einv.ub %&gt;%
+  rstatix::cor_gather()
+
+einv_pval &lt;- nct_res$einv.pvals %&gt;%
+  rename (var2 = Var1,
+          var1 = Var2)%&gt;%
+  mutate_if (is.factor, as.character)
+
+einv_df &lt;- data.frame(einv.mean,
+                      lb = einv.lb$cor,
+                      ub = einv.ub$cor) %&gt;%
+  distinct (cor, lb, ub, .keep_all= TRUE) %&gt;%
+  inner_join(einv_pval, by = c(&quot;var1&quot;, &quot;var2&quot;))
+
+einv_df %&gt;%
+  filter (`p-value` &lt; 0.05)</code></pre>
+<pre><code>  var1 var2        cor          lb        ub p-value
+1   q7   q2 0.06843029 0.002436637 0.1695355   0.040
+2  q12   q3 0.07914166 0.003728119 0.2060223   0.029
+3   q8   q5 0.07863373 0.003284935 0.1994877   0.044</code></pre>
+</div>
+</div>
+<div id="centrality" class="section level1">
+<h1>Centrality</h1>
+<pre class="r"><code>cen.perm &lt;- nct_res$diffcen.perm %&gt;%
+  data.frame() %&gt;%
+  select (matches (&quot;\\.strength&quot;))
+
+cen.perm.mean &lt;- apply (cen.perm, 2, mean) 
+cen.perm.lb &lt;- apply (cen.perm, 2, quantile, 0.025) 
+cen.perm.ub &lt;- apply (cen.perm, 2, quantile, 0.975) 
+
+cen.pval &lt;- nct_res$diffcen.pval %&gt;%
+  data.frame() %&gt;%
+  select (starts_with (&quot;strength&quot;))
+
+cen.pval_df &lt;- data.frame(var = paste0(&quot;q&quot;, 1:12),
+                          est = cen.perm.mean,
+                          lb = cen.perm.lb,
+                          ub = cen.perm.ub,
+                          p_val = cen.pval$strength) 
+
+cen.pval_df  %&gt;%
+  filter ( p_val &lt; 0.05)</code></pre>
+<pre><code>            var          est         lb        ub p_val
+q8.strength  q8 -0.004973974 -0.2558443 0.2143619 0.014</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.1.2 (2021-11-01)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19042)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United Kingdom.1252 
+[2] LC_CTYPE=English_United Kingdom.1252   
+[3] LC_MONETARY=English_United Kingdom.1252
+[4] LC_NUMERIC=C                           
+[5] LC_TIME=English_United Kingdom.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] flextable_0.6.9             officer_0.4.0              
+ [3] kableExtra_1.3.4            furrr_0.2.3                
+ [5] future_1.23.0               NetworkComparisonTest_2.2.1
+ [7] qgraph_1.9                  bootnet_1.5                
+ [9] huge_1.3.5                  cowplot_1.1.1              
+[11] arsenal_3.6.3               forcats_0.5.1              
+[13] stringr_1.4.0               dplyr_1.0.7                
+[15] purrr_0.3.4                 readr_2.0.2                
+[17] tidyr_1.1.4                 tibble_3.1.5               
+[19] ggplot2_3.3.5               tidyverse_1.3.1            
+
+loaded via a namespace (and not attached):
+  [1] utf8_1.2.2           R.utils_2.11.0       tidyselect_1.1.1    
+  [4] lme4_1.1-27.1        htmlwidgets_1.5.4    grid_4.1.2          
+  [7] munsell_0.5.0        codetools_0.2-18     withr_2.4.2         
+ [10] colorspace_2.0-2     NetworkToolbox_1.4.2 highr_0.9           
+ [13] knitr_1.36           uuid_1.0-2           rstudioapi_0.13     
+ [16] stats4_4.1.2         listenv_0.8.0        labeling_0.4.2      
+ [19] git2r_0.28.0         repr_1.1.3           mnormt_2.0.2        
+ [22] farver_2.1.0         rprojroot_2.0.2      parallelly_1.28.1   
+ [25] vctrs_0.3.8          generics_0.1.1       xfun_0.27           
+ [28] R6_2.5.1             doParallel_1.0.16    smacof_2.1-3        
+ [31] assertthat_0.2.1     promises_1.2.0.1     scales_1.1.1        
+ [34] nnet_7.3-16          gtable_0.3.0         globals_0.14.0      
+ [37] weights_1.0.4        workflowr_1.6.2      rlang_0.4.12        
+ [40] systemfonts_1.0.3    splines_4.1.2        rstatix_0.7.0       
+ [43] wordcloud_2.6        broom_0.7.10         checkmate_2.0.0     
+ [46] yaml_2.2.1           reshape2_1.4.4       abind_1.4-5         
+ [49] modelr_0.1.8         backports_1.3.0      httpuv_1.6.3        
+ [52] Hmisc_4.6-0          tools_4.1.2          psych_2.1.9         
+ [55] lavaan_0.6-9         ellipsis_0.3.2       jquerylib_0.1.4     
+ [58] RColorBrewer_1.1-2   proxy_0.4-26         polynom_1.4-0       
+ [61] Rcpp_1.0.7           plyr_1.8.6           base64enc_0.1-3     
+ [64] rpart_4.1-15         pbapply_1.5-0        haven_2.4.3         
+ [67] cluster_2.1.2        fs_1.5.0             magrittr_2.0.1      
+ [70] data.table_1.14.2    reprex_2.0.1         tmvnsim_1.0-2       
+ [73] mvtnorm_1.1-3        hms_1.1.1            evaluate_0.14       
+ [76] jpeg_0.1-9           readxl_1.3.1         gridExtra_2.3       
+ [79] shape_1.4.6          compiler_4.1.2       ellipse_0.4.2       
+ [82] mice_3.13.0          crayon_1.4.2         minqa_1.2.4         
+ [85] R.oo_1.24.0          htmltools_0.5.2      corpcor_1.6.10      
+ [88] later_1.3.0          tzdb_0.2.0           Formula_1.2-4       
+ [91] snow_0.4-4           lubridate_1.8.0      DBI_1.1.1           
+ [94] mgm_1.2-12           dbplyr_2.1.1         MASS_7.3-54         
+ [97] boot_1.3-28          IsingSampler_0.2.1   Matrix_1.3-4        
+[100] IsingFit_0.3.1       car_3.0-12           cli_3.1.0           
+[103] heplots_1.3-9        R.methodsS3_1.8.1    gdata_2.18.0        
+[106] parallel_4.1.2       igraph_1.2.7         pkgconfig_2.0.3     
+[109] skimr_2.1.3          foreign_0.8-81       xml2_1.3.2          
+[112] foreach_1.5.1        pbivnorm_0.6.0       svglite_2.0.0       
+[115] bslib_0.3.1          webshot_0.5.2        rvest_1.0.2         
+[118] digest_0.6.28        rmarkdown_2.11       cellranger_1.1.0    
+[121] htmlTable_2.3.0      gdtools_0.2.3        gtools_3.9.2        
+[124] nloptr_1.2.2.2       lifecycle_1.0.1      nlme_3.1-153        
+[127] glasso_1.11          jsonlite_1.7.2       carData_3.0-4       
+[130] viridisLite_0.4.0    fansi_0.5.0          pillar_1.6.4        
+[133] lattice_0.20-45      fastmap_1.1.0        httr_1.4.2          
+[136] plotrix_3.8-2        survival_3.2-13      glue_1.4.2          
+[139] networktools_1.4.0   zip_2.2.0            fdrtool_1.2.16      
+[142] png_0.1-7            iterators_1.0.13     candisc_0.8-6       
+[145] glmnet_4.1-2         class_7.3-19         stringi_1.7.5       
+[148] sass_0.4.0           nnls_1.4             latticeExtra_0.6-29 
+[151] eigenmodel_1.11      e1071_1.7-9         </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
