@@ -11,4 +11,4 @@ editor_options:
 Welcome to my research website.
 
 
-Click on this [docs/2-analysis.html](2-analysis.html) to see my results.
+Click on this [docs/3-paper_codes.html](3-paper_codes.html) to see my results.
